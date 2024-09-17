@@ -1,7 +1,5 @@
 import { useQuery } from '@apollo/client';
 
-import ProfileList from '../components/ProfileList';
-
 import { QUERY_PROFILES } from '../utils/queries';
 
 const Home = () => {
@@ -12,14 +10,9 @@ const Home = () => {
     <main>
       <div className="flex-row justify-center">
         <div className="col-12 col-md-10 my-3">
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
-            <ProfileList
-              profiles={profiles}
-              title="Here's the current roster of friends..."
-            />
-          )}
+        
+            <div>Pet Haven Hotel</div>
+          
         </div>
       </div>
     </main>

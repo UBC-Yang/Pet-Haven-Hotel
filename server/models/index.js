@@ -1,3 +1,3 @@
-const Profile = require('./Profile');
+const Profile = require('./Pet');
 
 module.exports = { Profile };
