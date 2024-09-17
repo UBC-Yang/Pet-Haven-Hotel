@@ -1,0 +1,12 @@
+{
+  "name": "pet-haven-hotel",
+  "version": "1.0.0",
+  "description": "Pet Haven Hotel is a single-page application built with the MERN stack designed to manage a pet hotel for cats and dogs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
