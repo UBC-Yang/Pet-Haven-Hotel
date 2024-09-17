@@ -1,2 +1,2 @@
 # Pet-Haven-Hotel
-Pet Haven Hotel is a single-page application built with the MERN stack designed to manage a pet hotel for cats and dogs.
+Pet Haven Hotel is a single-page application built with the MERN stack designed to manage a pet hotel for cats and dogs. The platform allows pet owners to book accommodations for their pets, view details about available services, and manage their bookings. The application features user authentication, booking management, and interactive elements to enhance user experience. It also supports responsive design, ensuring a seamless experience on both desktop and mobile devices.
