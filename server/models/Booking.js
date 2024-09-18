@@ -1,9 +1,31 @@
 const mongoose = require('mongoose');
 
-const bookingSchema = new mongoose.Schema({
-    pet: { type: mongoose.Schema.Types.ObjectId, ref: 'Pet' },
-    checkInDate: String,
-    checkOutDate: String
+const BookingSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    services: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Service'
+        }
+    ],
+    bookingDate: {
+        type: Date,
+        default: Date.now
+    },
+    status: {
+        type: String,
+        enum: ['Pending', 'Confirmed', 'Cancelled'],
+        default: 'Pending'
+    },
+    refundIssued: {
+        type: Boolean,
+        default: false
+    }
 });
 
-module.exports = mongoose.model('Booking', bookingSchema);
+const Booking = mongoose.model('Booking', BookingSchema);
+module.exports = Booking;
