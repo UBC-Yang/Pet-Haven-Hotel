@@ -1,40 +1,47 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom/dist'
-import './index.css'
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './index.css';
 
-import App from './App.jsx'
+import App from './App.jsx';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import Error from './pages/Error';
+import Registration from './pages/Registration';  
+import Booking from './pages/Booking';
+import Service from './pages/Service';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    error: <Error />,
     children: [
       {
         index: true,
         element: <Home />
-      }, {
-        path: '/login',
-        element: <Login />
-      }, {
-        path: '/signup',
-        element: <Signup />
-      }, {
-        path: '/me',
+      },
+      {
+        path: 'registration',  
+        element: <Registration />
+      },
+      {
+        path: 'me',
         element: <Profile />
-      }, {
-        path: '/profiles/:profileId',
+      },
+      {
+        path: 'profiles/:profileId',
         element: <Profile />
+      },
+      {
+        path: 'booking',
+        element: <Booking />
+      },
+      {
+        path: 'services',
+        element: <Service />
       }
     ]
   }
-])
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <RouterProvider router={router} />
-)
+);

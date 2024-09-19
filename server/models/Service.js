@@ -11,7 +11,7 @@ const ServiceSchema = new mongoose.Schema({
     },
     tier: {
         type: String,
-        enum: ['Basic', 'Deluxe', 'Premium'],
+        enum: ['Basic', 'Standard', 'Premium'],
         required: true
     }
 });

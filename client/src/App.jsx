@@ -1,8 +1,7 @@
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import client from './apolloClient';
-import BookingForm from './components/BookingForm';
-import PetList from './components/PetList';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -16,8 +15,8 @@ function App() {
         <ApolloProvider client={client}>
             <Container>
                 <h1>Pet Haven Hotel</h1>
-                <BookingForm />
-                <PetList />
+                {/* Outlet will render child routes */}
+                <Outlet />
             </Container>
         </ApolloProvider>
     );

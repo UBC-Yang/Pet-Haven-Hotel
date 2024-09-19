@@ -1,4 +1,3 @@
-// src/utils/mutations.js
 import { gql } from '@apollo/client';
 
 export const REGISTER_USER = gql`
