@@ -1,6 +1,6 @@
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
-import client from './apolloClient';
+import client from './utils/apolloClient';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from './components/Navbar'; // Import Navbar
