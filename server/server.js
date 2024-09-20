@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
@@ -14,6 +15,8 @@ const server = new ApolloServer({
   resolvers,
 });
 
+app.use(cors());
+
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await server.start();
@@ -21,6 +24,12 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
+  app.use('/graphql', (req, res, next) => {
+    console.log(req.body); // This will log the request body
+    next();
+  });
+
+  // Apollo server middleware
   app.use('/graphql', expressMiddleware(server, {
     context: authMiddleware
   }));

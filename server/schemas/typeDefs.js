@@ -26,6 +26,7 @@ const typeDefs = gql`
 
     type Query {
         users: [User]
+        profiles: [User]
         services: [Service]
         bookings(userId: ID!): [Booking]
     }

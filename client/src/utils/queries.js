@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Existing exports
 export const GET_USERS = gql`
     query GetUsers {
         users {
@@ -32,6 +33,16 @@ export const GET_BOOKINGS = gql`
                 name
                 price
             }
+        }
+    }
+`;
+
+// New export for QUERY_PROFILES
+export const QUERY_PROFILES = gql`
+    query GetProfiles {
+        profiles {
+            id
+            name
         }
     }
 `;

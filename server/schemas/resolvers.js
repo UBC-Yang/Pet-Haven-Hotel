@@ -7,6 +7,7 @@ const Booking = require('../models/Booking');
 const resolvers = {
     Query: {
         users: async () => User.find(),
+        profiles: async () => User.find(),
         services: async () => Service.find(),
         bookings: async (_, { userId }) => Booking.find({ user: userId }).populate('services')
     },
