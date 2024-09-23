@@ -15,6 +15,7 @@ const server = new ApolloServer({
   resolvers,
 });
 
+// Enable CORS
 app.use(cors());
 
 // Create a new instance of an Apollo server with the GraphQL schema
@@ -24,16 +25,18 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
+  // Debugging: Log the request body
   app.use('/graphql', (req, res, next) => {
-    console.log(req.body); // This will log the request body
+    console.log(req.body);
     next();
   });
 
-  // Apollo server middleware
+  // Apollo server middleware with authentication
   app.use('/graphql', expressMiddleware(server, {
-    context: authMiddleware
+    context: authMiddleware,
   }));
 
+  // Serve static assets in production
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -42,6 +45,7 @@ const startApolloServer = async () => {
     });
   }
 
+  // Connect to the database and start the server
   db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);

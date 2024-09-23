@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa'; // Importing the hamburger icon
+import { AuthContext } from '../context/AuthContext'; // Import the AuthContext
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State to manage the dropdown
+  const { isAuthenticated, logout } = useContext(AuthContext); // Get authentication state and logout function
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -28,12 +30,20 @@ const Navbar = () => {
           <li>
             <Link to="/booking" className="text-white hover:bg-gray-700 p-2 rounded">Booking</Link>
           </li>
-          <li>
-            <Link to="/me" className="text-white hover:bg-gray-700 p-2 rounded">Profile</Link>
-          </li>
-          <li>
-            <Link to="/registration" className="text-white hover:bg-gray-700 p-2 rounded">Register</Link>
-          </li>
+          {isAuthenticated ? (
+            <>
+              <li>
+                <Link to="/me" className="text-white hover:bg-gray-700 p-2 rounded">Profile</Link>
+              </li>
+              <li>
+                <button onClick={logout} className="text-white hover:bg-gray-700 p-2 rounded">Logout</button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link to="/registration" className="text-white hover:bg-gray-700 p-2 rounded">Register</Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>
