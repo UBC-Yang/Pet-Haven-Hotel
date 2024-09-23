@@ -1,4 +1,3 @@
-// root/client/App.jsx
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import client from './utils/apolloClient';
@@ -11,6 +10,7 @@ const Container = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    flex-grow: 1; // Ensure the container takes up available space
 `;
 
 function App() {
@@ -19,7 +19,6 @@ function App() {
             <div className="flex flex-col min-h-screen">
                 <Navbar /> {/* Include Navbar */}
                 <Container>
-                    <h1>Pet Haven Hotel</h1>
                     <Outlet /> {/* This will render the child routes */}
                 </Container>
                 <Footer /> {/* Include Footer */}

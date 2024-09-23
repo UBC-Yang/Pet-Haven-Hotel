@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Registration from './pages/Registration';  
 import Booking from './pages/Booking';
-import Services from './pages/Services'; // Make sure this matches the file name
+import Services from './pages/Services'; // Ensure this matches the file name
 
 const router = createBrowserRouter([
   {

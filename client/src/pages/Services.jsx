@@ -1,21 +1,24 @@
 import React from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_SERVICES } from '../utils/queries';
 
 const Services = () => {
-  const services = [
-    { id: 1, name: 'Pet Boarding', description: 'Comfortable boarding for your pets.' },
-    { id: 2, name: 'Pet Grooming', description: 'Professional grooming services for all breeds.' },
-    { id: 3, name: 'Dog Walking', description: 'Daily walks and exercise for your dog.' },
-    { id: 4, name: 'Veterinary Services', description: 'On-site vet services for checkups and emergencies.' }
-  ];
+  const { loading, error, data } = useQuery(GET_SERVICES);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  const services = data?.services || [];
 
   return (
     <div>
-      <h2>Our Services</h2>
+      <h1>Available Services</h1>
       <ul>
         {services.map((service) => (
           <li key={service.id}>
-            <h3>{service.name}</h3>
-            <p>{service.description}</p>
+            <h2>{service.name}</h2>
+            <p>Price: ${service.price}</p>
+            <p>Tier: {service.tier}</p>
           </li>
         ))}
       </ul>
