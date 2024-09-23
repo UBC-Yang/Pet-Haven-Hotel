@@ -1,3 +1,4 @@
+// root/client/main.jsx
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
@@ -7,12 +8,12 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Registration from './pages/Registration';  
 import Booking from './pages/Booking';
-import Service from './pages/Service';
+import Services from './pages/Services'; // Make sure this matches the file name
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <App />, // The App component now handles the layout
     children: [
       {
         index: true,
@@ -27,16 +28,12 @@ const router = createBrowserRouter([
         element: <Profile />
       },
       {
-        path: 'profiles/:profileId',
-        element: <Profile />
-      },
-      {
         path: 'booking',
         element: <Booking />
       },
       {
         path: 'services',
-        element: <Service />
+        element: <Services /> // Ensure this is correctly named
       }
     ]
   }
