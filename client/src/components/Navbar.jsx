@@ -18,7 +18,7 @@ const Navbar = () => {
           <Link to="/me">Profile</Link>
         </li>
         <li>
-          <Link to="/registration">Register</Link>
+          <Link to="/registration">Register</Link> {/* This points to Registration.jsx */}
         </li>
       </ul>
     </nav>
@@ -26,4 +26,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
