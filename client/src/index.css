@@ -1,4 +1,4 @@
-/* Inria serif */
+/* index.css */
 @import url("https://fonts.googleapis.com/css2?family=Inria+Serif:wght@700&display=swap");
 /* Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
@@ -56,6 +56,10 @@
     @apply py-2 px-9 border-2 rounded-md border-dark_primary rounded-br-3xl font-medium;
   }
 }
-.swiper-pagination-bullet {
-  @apply w-3 h-3 bg-dark_primary;
+
+/* Ensure no conflicting global styles */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
