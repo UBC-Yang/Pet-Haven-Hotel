@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 
 // Use environment variables for security
 const secret = process.env.JWT_SECRET || 'mysecretssshhhhhhh';
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
 const expiration = process.env.JWT_EXPIRATION || '2h';
 
 module.exports = {
