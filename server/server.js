@@ -4,6 +4,7 @@ const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
+require('dotenv').config(); // Load environment variables
 
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -14,6 +15,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
+
+// Debugging: Check the JWT_SECRET
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 // Enable CORS
 app.use(cors());

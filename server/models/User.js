@@ -10,10 +10,12 @@ const PetSchema = new mongoose.Schema({
     gender: {
         type: String,
         required: true,
+        enum: ['male', 'female'], // Limit values to specific ones
     },
     age: {
         type: Number,
         required: true,
+        min: 0, // Ensure age is a non-negative number
     },
     breed: {
         type: String,
@@ -44,10 +46,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        lowercase: true, // Normalize email case
+        trim: true, // Remove whitespace
     },
     password: {
         type: String,
         required: true,
+        minlength: 6, // Minimum password length
     },
     bookings: [
         {
