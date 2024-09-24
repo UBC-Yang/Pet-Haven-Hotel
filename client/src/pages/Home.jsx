@@ -6,7 +6,7 @@ const Home = () => {
     <main className="mt-16">
       <div className="flex flex-col items-center">
         {/* Image Carousel */}
-        <div className="w-full max-w-6xl">
+        <div className="w-full max-w-6xl mx-auto">
           <ImageCarousel />
         </div>
 

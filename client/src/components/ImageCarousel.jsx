@@ -11,7 +11,7 @@ const images = [
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%; /* Full width of the parent container */
-  max-width: 1200px; /* Limit the max width to prevent the images from being too big */
+  max-width: 1152px; /* Limit the max width to prevent the images from being too big */
   height: 400px; /* Fixed height */
   overflow: hidden;
   margin: 100px auto 20px auto; /* 40px margin at the top, 20px margin at the bottom, centered horizontally */
