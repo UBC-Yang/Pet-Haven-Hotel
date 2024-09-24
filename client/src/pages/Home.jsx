@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import ImageCarousel from '../components/ImageCarousel'; // Import the carousel
+import FooterInfo from '../components/FooterInfo'; // Import the new FooterInfo component
 
 const Home = () => {
   return (
@@ -54,7 +55,7 @@ const Home = () => {
           {/* Centered Testimonials */}
           <div className="relative z-100 flex flex-col items-center justify-center h-full p-8 text-white text-center">
             <h2 className="text-3xl font-bold mb-6">In The Press</h2>
-            <div className="flex flex-wrap justify-center gap-10">
+            <div className="flex flex-wrap justify-center gap-20">
               {/* Testimonial 1 */}
               <div className="bg-white bg-opacity-60 p-4 rounded-lg shadow-lg text-gray-800 max-w-xs z-100">
                 <p className="italic">
@@ -76,6 +77,9 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        {/* Footer Information Section */}
+        <FooterInfo /> {/* Add FooterInfo here */}
       </div>
     </main>
   );
