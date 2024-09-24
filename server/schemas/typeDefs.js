@@ -16,7 +16,7 @@ const typeDefs = gql`
         lastName: String!
         email: String!
         bookings: [Booking]
-        pets: [Pet] 
+        pets: [Pet]
     }
 
     type Service {
