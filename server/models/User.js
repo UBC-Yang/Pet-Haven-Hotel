@@ -10,7 +10,7 @@ const PetSchema = new mongoose.Schema({
     gender: {
         type: String,
         required: true,
-        enum: ['male', 'female'], // Limit values to specific ones
+        enum: ['male', 'female', 'Male', 'Female'], 
     },
     age: {
         type: Number,
