@@ -1,15 +1,7 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
-    type Pet {
-        name: String!
-        gender: String!
-        age: Int!
-        breed: String!
-        notes: String!
-    }
-
-    type User {
+   type User {
         id: ID!
         username: String!
         firstName: String!
@@ -17,6 +9,11 @@ const typeDefs = gql`
         email: String!
         bookings: [Booking]
         pets: [Pet]
+    }
+
+    type AuthPayload {
+        token: String!
+        user: User!
     }
 
     type Service {
@@ -44,11 +41,19 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        register(firstName: String!, lastName: String!, username: String!, email: String!, password: String!, pets: [PetInput]!): User
+        register(firstName: String!, lastName: String!, username: String!, email: String!, password: String!, pets: [PetInput]!): AuthPayload
         login(email: String!, password: String!): String
         bookServices(userId: ID!, serviceIds: [ID!]!): Booking
         removeServiceFromBooking(bookingId: ID!, serviceId: ID!): Booking
         cancelBooking(bookingId: ID!): Booking
+    }
+
+    type Pet {
+        name: String!
+        gender: String!
+        age: Int!
+        breed: String!
+        notes: String!
     }
 
     input PetInput {

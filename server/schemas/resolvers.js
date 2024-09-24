@@ -23,35 +23,40 @@ const resolvers = {
             if (!emailRegex.test(email)) {
                 throw new Error("Please enter a valid email address.");
             }
-
+    
             const existingUser = await User.findOne({ email });
             if (existingUser) {
                 throw new Error("Email is already in use.");
             }
-
+    
             if (password.length < 6) {
                 throw new Error("Password must be at least 6 characters long.");
             }
-
+    
             const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
             const user = new User({ firstName, lastName, username, email, password: hashedPassword, pets });
             await user.save();
-            return user;
+    
+            // Generate a token
+            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    
+            // Return the token and user as AuthPayload
+            return { token, user }; 
         },
         login: async (_, { email, password }) => {
             const user = await User.findOne({ email });
-            if (!user) throw new Error('User not found');
+            if (!user) throw new AuthenticationError('User not found');
 
             const valid = await bcrypt.compare(password, user.password);
-            if (!valid) throw new Error('Invalid password');
+            if (!valid) throw new AuthenticationError('Invalid password');
 
             const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-            return token;
+            return { token, user }; // Return token and user object
         },
         bookServices: async (_, { userId, serviceIds }) => {
             const booking = new Booking({ user: userId, services: serviceIds });
             await booking.save();
-            return booking.populate('services');
+            return await Booking.findById(booking.id).populate('services'); // Ensure to return a populated booking
         },
         removeServiceFromBooking: async (_, { bookingId, serviceId }) => {
             const booking = await Booking.findById(bookingId);

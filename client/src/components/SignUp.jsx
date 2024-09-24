@@ -18,17 +18,27 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setRegistrationError(''); // Reset error message
-
+    
+        // Password validation
         if (password !== confirmPassword) {
             setRegistrationError("Passwords do not match.");
             return;
         }
-
+    
+        // Validate pet entries before submitting
         const updatedPets = pets.map(pet => ({
             ...pet,
-            age: parseInt(pet.age) >= 0 ? parseInt(pet.age) : 0 // Ensure age is non-negative
+            age: parseInt(pet.age, 10) >= 0 ? parseInt(pet.age, 10) : 0 // Ensure age is non-negative
         }));
-
+    
+        // Check for empty fields in pets
+        for (const pet of updatedPets) {
+            if (!pet.name || !pet.gender || !pet.breed) {
+                setRegistrationError("Please fill out all pet details.");
+                return;
+            }
+        }
+    
         try {
             const { data } = await register({
                 variables: {
@@ -42,10 +52,20 @@ const SignUp = () => {
             });
             console.log('Registration successful:', data);
             resetForm();
-            // Optionally redirect the user or show a success message here
         } catch (error) {
             console.error("Registration error details:", error);
-            setRegistrationError("Registration failed. Please check your inputs."); // User-friendly message
+            if (error.graphQLErrors) {
+                error.graphQLErrors.forEach(({ message }) => {
+                    console.error("GraphQL error:", message);
+                    setRegistrationError(message); // Display GraphQL error messages
+                });
+            }
+            if (error.networkError) {
+                console.error("Network error:", error.networkError);
+                setRegistrationError("Network error occurred. Please try again later.");
+            } else {
+                setRegistrationError("Registration failed. Please check your inputs.");
+            }
         }
     };
 
