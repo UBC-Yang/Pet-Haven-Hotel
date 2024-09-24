@@ -13,15 +13,15 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-800 p-4 fixed w-full z-10">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mx-4">
         {/* Logo (Clickable, redirects to home) */}
         <Link to="/" className="flex items-center">
           <img
             src="/images/hotel-logo.png"  // Path to your logo
             alt="Hotel Logo"
-            className="h-32 w-32 mr-2"  // Adjust the size here
+            className="h-32 w-32 mr-6"  // Adjust the size here
           />
-          <span className="text-white text-lg font-serif hover:text-shadow-glow">Pet Haven Hotel</span> {/* Add glow effect here */}
+          <span className="text-white text-3xl font-serif hover:text-shadow-glow">Pet Haven Hotel</span>
         </Link>
 
         {/* Hamburger menu for mobile view */}
