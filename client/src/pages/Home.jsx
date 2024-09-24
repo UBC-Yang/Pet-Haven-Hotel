@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <main className="mt-16 p-4">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center pt-20">
         <ImageCarousel /> {/* Use the carousel here */}
         <div className="max-w-2xl w-full my-3">
           <h1 className="text-4xl font-bold">Pet Haven Hotel</h1>
