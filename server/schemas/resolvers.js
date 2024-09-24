@@ -29,7 +29,12 @@ const resolvers = {
                 throw new Error("Email is already in use.");
             }
 
-            const user = new User({ firstName, lastName, username, email, password, pets });
+            if (password.length < 6) {
+                throw new Error("Password must be at least 6 characters long.");
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+            const user = new User({ firstName, lastName, username, email, password: hashedPassword, pets });
             await user.save();
             return user;
         },

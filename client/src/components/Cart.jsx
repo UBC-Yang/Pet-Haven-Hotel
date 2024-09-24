@@ -47,13 +47,17 @@ const Cart = () => {
     return sum.toFixed(2);
   }
 
+  function clearCart() {
+    dispatch({ type: ADD_MULTIPLE_TO_CART, products: [] });
+  }
+
   function submitCheckout() {
     const cartItems = state.cart.map((item) => ({
       name: item.name,
       price: item.price,
       quantity: item.purchaseQuantity,
     }));
-  
+
     fetch('/create-checkout-session', {
       method: 'POST',
       headers: {
@@ -61,19 +65,20 @@ const Cart = () => {
       },
       body: JSON.stringify({ cartItems }),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to create checkout session');
+        return response.json();
+      })
       .then(session => {
         return stripePromise.then(stripe => {
           return stripe.redirectToCheckout({ sessionId: session.id });
         });
       })
-      .then(result => {
-        if (result.error) {
-          console.error(result.error.message);
-        }
-      })
-      .catch(error => console.error('Error:', error));
-  }  
+      .catch(error => {
+        console.error('Error during checkout:', error.message);
+        // Optionally, display an error message to the user
+      });
+  }
 
   if (!state.cartOpen) {
     return (
@@ -104,6 +109,9 @@ const Cart = () => {
               <span>(log in to check out)</span>
             )}
           </div>
+          <button onClick={clearCart} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 mt-4">
+            Clear Cart
+          </button>
         </div>
       ) : (
         <h3 className="text-center">

@@ -44,7 +44,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        register(username: String!, firstName: String!, lastName: String!, email: String!, password: String!, pets: [PetInput]!): User
+        register(firstName: String!, lastName: String!, username: String!, email: String!, password: String!, pets: [PetInput]!): User
         login(email: String!, password: String!): String
         bookServices(userId: ID!, serviceIds: [ID!]!): Booking
         removeServiceFromBooking(bookingId: ID!, serviceId: ID!): Booking
