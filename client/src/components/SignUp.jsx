@@ -54,18 +54,8 @@ const SignUp = () => {
             resetForm();
         } catch (error) {
             console.error("Registration error details:", error);
-            if (error.graphQLErrors) {
-                error.graphQLErrors.forEach(({ message }) => {
-                    console.error("GraphQL error:", message);
-                    setRegistrationError(message); // Display GraphQL error messages
-                });
-            }
-            if (error.networkError) {
-                console.error("Network error:", error.networkError);
-                setRegistrationError("Network error occurred. Please try again later.");
-            } else {
-                setRegistrationError("Registration failed. Please check your inputs.");
-            }
+            const errorMessage = error.graphQLErrors?.[0]?.message || "Registration failed. Please check your inputs.";
+            setRegistrationError(errorMessage); // Display error messages more clearly
         }
     };
 
