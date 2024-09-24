@@ -66,7 +66,7 @@ const Services = () => {
     };
 
     return (
-        <main className="mt-16 p-4">
+        <main className="mt-16 p-4 pt-20">
             <div className="flex flex-col items-center">
                 <div className="max-w-2xl w-full my-3">
                     <h1 className="text-4xl font-bold">Available Services</h1>

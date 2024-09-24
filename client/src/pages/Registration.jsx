@@ -10,7 +10,7 @@ const Registration = () => {
   };
 
   return (
-    <main className="mt-16 p-4"> {/* Add margin-top and padding */}
+    <main className="mt-16 p-4 pt-20"> {/* Add margin-top and padding */}
       <div className="flex flex-col items-center">
         <div className="max-w-2xl w-full my-3">
           <h2 className="text-4xl font-bold">{isLogin ? 'Login' : 'Sign Up'}</h2>
