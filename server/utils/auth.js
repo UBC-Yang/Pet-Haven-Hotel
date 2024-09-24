@@ -1,8 +1,9 @@
 const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
 
-const secret = 'mysecretssshhhhhhh'; // Consider using an environment variable for security
-const expiration = '2h';
+// Use environment variables for security
+const secret = process.env.JWT_SECRET || 'mysecretssshhhhhhh';
+const expiration = process.env.JWT_EXPIRATION || '2h';
 
 module.exports = {
   AuthenticationError: new GraphQLError('Could not authenticate user.', {
@@ -24,12 +25,14 @@ module.exports = {
       return req; // No token found, return the request as-is
     }
 
-    // If token can be verified, add the decoded user's data to the request so it can be accessed in the resolver
+    // If token can be verified, add the decoded user's data to the request
     try {
-      const { data } = jwt.verify(token, secret, { maxAge: expiration });
+      const { data } = jwt.verify(token, secret); // Removed maxAge
       req.user = data; // Attach user data to the request
     } catch (err) {
-      console.log('Invalid token', err);
+      console.log('Invalid token:', err);
+      // Optionally, do not attach req.user if token is invalid
+      req.user = null; // Explicitly set to null for clarity
     }
 
     // Return the request object so it can be passed to the resolver as `context`
