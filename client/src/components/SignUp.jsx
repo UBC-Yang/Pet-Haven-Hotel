@@ -13,13 +13,22 @@ const SignUp = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [pets, setPets] = useState([{ name: '', gender: '', age: '', breed: '', notes: '' }]);
     const [register, { error }] = useMutation(REGISTER_USER);
+    const [registrationError, setRegistrationError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setRegistrationError(''); // Reset error message
+
         if (password !== confirmPassword) {
-            alert("Passwords do not match.");
+            setRegistrationError("Passwords do not match.");
             return;
         }
+
+        const updatedPets = pets.map(pet => ({
+            ...pet,
+            age: parseInt(pet.age) >= 0 ? parseInt(pet.age) : 0 // Ensure age is non-negative
+        }));
+
         try {
             const { data } = await register({
                 variables: {
@@ -28,14 +37,15 @@ const SignUp = () => {
                     username,
                     email,
                     password,
-                    pets,
+                    pets: updatedPets,
                 },
             });
             console.log('Registration successful:', data);
             resetForm();
+            // Optionally redirect the user or show a success message here
         } catch (error) {
-            console.error(error);
-            alert(error.message);
+            console.error("Registration error details:", error);
+            setRegistrationError("Registration failed. Please check your inputs."); // User-friendly message
         }
     };
 
@@ -51,8 +61,10 @@ const SignUp = () => {
     };
 
     const removePet = (index) => {
-        const updatedPets = pets.filter((_, i) => i !== index);
-        setPets(updatedPets);
+        if (window.confirm("Are you sure you want to remove this pet?")) {
+            const updatedPets = pets.filter((_, i) => i !== index);
+            setPets(updatedPets);
+        }
     };
 
     const resetForm = () => {
@@ -67,7 +79,7 @@ const SignUp = () => {
 
     return (
         <div className="container mx-auto mt-10">
-            <h2 className="font-bold">Owner Details</h2>
+            <h2 className="font-bold text-2xl mb-4">Owner Details</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <input
                     type="text"
@@ -138,7 +150,7 @@ const SignUp = () => {
                     </button>
                 </div>
 
-                <h2 className="font-bold">Pet Details</h2>
+                <h2 className="font-bold text-2xl mb-4">Pet Details</h2>
                 {pets.map((pet, index) => (
                     <div key={index} className="border p-4 mb-4">
                         <input
@@ -164,13 +176,14 @@ const SignUp = () => {
                         </select>
 
                         <input
-                            type="text"
+                            type="number"
                             name="age"
                             placeholder="Age"
                             value={pet.age}
-                            onChange={(e) => handlePetChange(index, e)}
+                            onChange={(e) => handlePetChange(index, e)} // Pass the event directly
                             className="border p-2 w-full mb-2"
                             required
+                            min="0" // Prevent negative numbers
                         />
                         <input
                             type="text"
@@ -207,6 +220,7 @@ const SignUp = () => {
                 <button type="submit" className="bg-green-500 text-white p-2 rounded mt-4">
                     Sign Up
                 </button>
+                {registrationError && <p className="text-red-500">{registrationError}</p>}
                 {error && <p className="text-red-500">{error.message}</p>}
             </form>
         </div>

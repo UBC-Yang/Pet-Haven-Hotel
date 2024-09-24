@@ -4,7 +4,7 @@ const typeDefs = gql`
     type Pet {
         name: String!
         gender: String!
-        age: String!
+        age: Int!
         breed: String!
         notes: String!
     }
@@ -54,7 +54,7 @@ const typeDefs = gql`
     input PetInput {
         name: String!
         gender: String!
-        age: String!
+        age: Int!
         breed: String!
         notes: String!
     }
