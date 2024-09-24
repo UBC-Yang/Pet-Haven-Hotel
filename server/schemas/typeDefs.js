@@ -13,7 +13,7 @@ const typeDefs = gql`
         name: String!
         price: Float!
         tier: String!
-        description: String!  // Ensure description is included
+        description: String! 
     }
 
     type Booking {
