@@ -1,5 +1,4 @@
-import { useQuery } from '@apollo/client';
-import { GET_SERVICES } from '../utils/queries'; // Keep this import if you want to load services later
+import { Link } from 'react-router-dom';
 import ImageCarousel from '../components/ImageCarousel'; // Import the carousel
 
 const Home = () => {
@@ -8,7 +7,7 @@ const Home = () => {
 
   return (
     <main className="mt-16 p-4">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center pt-20">
         <ImageCarousel /> {/* Use the carousel here */}
         <div className="max-w-2xl w-full my-3">
           <h1 className="text-4xl font-bold">Pet Haven Hotel</h1>
@@ -28,9 +27,18 @@ const Home = () => {
               Come and experience the best in pet hospitality at Pet Haven Hotel. Your furry friend will thank you!
             </p>
           </section>
-          <div className="mt-8 mb-12">
-          </div>
         </div>
+
+        <div className="mt-10">
+          <Link to="/services">
+            <button className="bg-blue-500 text-white px-6 py-3 rounded-lg text-xl hover:bg-blue-600 transition duration-300">
+              Check Out Our Services!
+            </button>
+          </Link>
+        </div>
+
+        <div className="mt-8 mb-12"></div>
+
       </div>
     </main>
   );
