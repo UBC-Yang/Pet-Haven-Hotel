@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBars } from 'react-icons/fa'; 
+import { FaBars, FaShoppingCart } from 'react-icons/fa'; // Import the cart icon
 import { useAuth } from '../context/AuthContext'; // Use the custom hook instead
 
 const Navbar = () => {
@@ -44,6 +44,16 @@ const Navbar = () => {
               <Link to="/registration" className="text-white hover:bg-gray-700 p-2 rounded">Register</Link>
             </li>
           )}
+          {/* Add Cart Icon */}
+          <li className="relative">
+            <Link to="/cart" className="text-white hover:bg-gray-700 p-2 rounded flex items-center">
+              <FaShoppingCart className="text-2xl" />
+              {/* Optionally, add a badge to show the number of items in the cart */}
+              <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
+                3
+              </span>
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>
