@@ -13,6 +13,7 @@ const typeDefs = gql`
         name: String!
         price: Float!
         tier: String!
+        description: String!  // Ensure description is included
     }
 
     type Booking {
@@ -41,5 +42,3 @@ const typeDefs = gql`
 `;
 
 module.exports = typeDefs;
-
-
