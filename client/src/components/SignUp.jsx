@@ -1,205 +1,190 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { REGISTER_USER } from '../utils/mutations'; // Adjust the import path as necessary
 
-const Signup = () => {
-  const [formState, setFormState] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    pets: [{ name: '', gender: '', age: '', breed: '', notes: '' }] // New state for pets
-  });
-  
-  const [error, setError] = useState('');
+const SignUp = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [pets, setPets] = useState([{ name: '', gender: '', age: '', breed: '', notes: '' }]);
+    const [register, { error }] = useMutation(REGISTER_USER);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormState({ ...formState, [name]: value });
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+        try {
+            const { data } = await register({
+                variables: {
+                    firstName,
+                    lastName,
+                    username,
+                    email,
+                    password,
+                    pets,
+                },
+            });
+            console.log('Registration successful:', data);
+            resetForm();
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        }
+    };
 
-  const handlePetChange = (index, e) => {
-    const { name, value } = e.target;
-    const updatedPets = [...formState.pets];
-    updatedPets[index][name] = value;
-    setFormState({ ...formState, pets: updatedPets });
-  };
+    const handlePetChange = (index, event) => {
+        const { name, value } = event.target;
+        const updatedPets = [...pets];
+        updatedPets[index][name] = value;
+        setPets(updatedPets);
+    };
 
-  const addPet = () => {
-    setFormState({
-      ...formState,
-      pets: [...formState.pets, { name: '', gender: '', age: '', breed: '', notes: '' }]
-    });
-  };
+    const addPet = () => {
+        setPets([...pets, { name: '', gender: '', age: '', breed: '', notes: '' }]);
+    };
 
-  const removePet = (index) => {
-    const updatedPets = formState.pets.filter((_, i) => i !== index);
-    setFormState({ ...formState, pets: updatedPets });
-  };
+    const removePet = (index) => {
+        const updatedPets = pets.filter((_, i) => i !== index);
+        setPets(updatedPets);
+    };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Check if all fields are filled (owner and pets)
-    const { firstName, lastName, username, email, password, confirmPassword, pets } = formState;
-    if (!firstName || !lastName || !username || !email || !password || !confirmPassword || pets.some(pet => !pet.name || !pet.gender || !pet.age || !pet.breed || !pet.notes)) {
-      setError("All fields are required.");
-      return;
-    }
+    const resetForm = () => {
+        setFirstName('');
+        setLastName('');
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setPets([{ name: '', gender: '', age: '', breed: '', notes: '' }]);
+    };
 
-    // Other validations...
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    console.log("Form submitted", formState);
-    // Call your signup mutation here...
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      <h2 className="text-lg font-bold">Sign Up</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <div>
-        <label>First Name:</label>
-        <input
-          type="text"
-          name="firstName"
-          value={formState.firstName}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label>Last Name:</label>
-        <input
-          type="text"
-          name="lastName"
-          value={formState.lastName}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label>Username:</label>
-        <input
-          type="text"
-          name="username"
-          value={formState.username}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={formState.email}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={formState.password}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label>Confirm Password:</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          value={formState.confirmPassword}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-          required
-        />
-      </div>
-
-      <h2 className="text-lg font-bold">Pet Details</h2>
-      {formState.pets.map((pet, index) => (
-        <div key={index} className="border p-4 rounded">
-          <h3 className="font-semibold">Pet {index + 1}</h3>
-          <div>
-            <label>Pet Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={pet.name}
-              onChange={(e) => handlePetChange(index, e)}
-              className="border rounded p-2 w-full"
-              required
-            />
-          </div>
-          <div>
-            <label>Gender:</label>
-            <input
-              type="text"
-              name="gender"
-              value={pet.gender}
-              onChange={(e) => handlePetChange(index, e)}
-              className="border rounded p-2 w-full"
-              required
-            />
-          </div>
-          <div>
-            <label>Age:</label>
-            <input
-              type="text"
-              name="age"
-              value={pet.age}
-              onChange={(e) => handlePetChange(index, e)}
-              className="border rounded p-2 w-full"
-              required
-            />
-          </div>
-          <div>
-            <label>Breed:</label>
-            <input
-              type="text"
-              name="breed"
-              value={pet.breed}
-              onChange={(e) => handlePetChange(index, e)}
-              className="border rounded p-2 w-full"
-              required
-            />
-          </div>
-          <div>
-            <label>General Notes:</label>
-            <textarea
-              name="notes"
-              value={pet.notes}
-              onChange={(e) => handlePetChange(index, e)}
-              className="border rounded p-2 w-full"
-              required
-            />
-          </div>
-          <button type="button" onClick={() => removePet(index)} className="text-red-500">
-            Remove Pet
-          </button>
+    return (
+        <div className="container mx-auto mt-10">
+            <h2 className="font-bold">Owner Details</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                    type="text"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="border p-2 w-full"
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="border p-2 w-full"
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="border p-2 w-full"
+                    required
+                />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="border p-2 w-full"
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="border p-2 w-full"
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="border p-2 w-full"
+                    required
+                />
+                
+                <h2 className="font-bold">Pet Details</h2>
+                {pets.map((pet, index) => (
+                    <div key={index} className="border p-4 mb-4">
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Pet Name"
+                            value={pet.name}
+                            onChange={(e) => handlePetChange(index, e)}
+                            className="border p-2 w-full mb-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="gender"
+                            placeholder="Gender"
+                            value={pet.gender}
+                            onChange={(e) => handlePetChange(index, e)}
+                            className="border p-2 w-full mb-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="age"
+                            placeholder="Age"
+                            value={pet.age}
+                            onChange={(e) => handlePetChange(index, e)}
+                            className="border p-2 w-full mb-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="breed"
+                            placeholder="Breed"
+                            value={pet.breed}
+                            onChange={(e) => handlePetChange(index, e)}
+                            className="border p-2 w-full mb-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="notes"
+                            placeholder="Notes"
+                            value={pet.notes}
+                            onChange={(e) => handlePetChange(index, e)}
+                            className="border p-2 w-full mb-2"
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => removePet(index)}
+                            className="bg-red-500 text-white p-1 rounded"
+                        >
+                            Remove Pet
+                        </button>
+                    </div>
+                ))}
+                <div className="flex space-x-2">
+                    <button type="button" onClick={addPet} className="bg-blue-500 text-white p-2 rounded">
+                        Add Another Pet
+                    </button>
+                </div>
+                <button type="submit" className="bg-green-500 text-white p-2 rounded mt-4">
+                    Sign Up
+                </button>
+                {error && <p className="text-red-500">{error.message}</p>}
+            </form>
         </div>
-      ))}
-      <button type="button" onClick={addPet} className="bg-green-500 text-white px-4 py-2 rounded">
-        Add Another Pet
-      </button>
-
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Sign Up
-      </button>
-    </form>
-  );
+    );
 };
 
-export default Signup;
+export default SignUp;
