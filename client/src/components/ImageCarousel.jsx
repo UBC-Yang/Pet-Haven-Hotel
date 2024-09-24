@@ -51,7 +51,7 @@ const Dot = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${(props) => (props.active ? 'white' : 'rgba(255, 255, 255, 0.5)')};
+  background-color: ${(props) => (props.$active ? 'white' : 'rgba(255, 255, 255, 0.5)')};
   cursor: pointer;
 `;
 
@@ -88,7 +88,7 @@ const ImageCarousel = () => {
         {images.map((_, index) => (
           <Dot
             key={index}
-            active={index === currentIndex}
+            $active={index === currentIndex}  // Use transient prop
             onClick={() => setCurrentIndex(index)}
           />
         ))}
@@ -98,6 +98,3 @@ const ImageCarousel = () => {
 };
 
 export default ImageCarousel;
-
-
-

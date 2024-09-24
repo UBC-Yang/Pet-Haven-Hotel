@@ -10,12 +10,12 @@ const Registration = () => {
   };
 
   return (
-    <main className="mt-16 p-4"> {/* Add margin-top and padding */}
+    <main className="mt-16 p-4 "> {/* Add margin-top and padding */}
       <div className="flex flex-col items-center">
         <div className="max-w-2xl w-full my-3">
-          <h2 className="text-4xl font-bold">{isLogin ? 'Login' : 'Sign Up'}</h2>
+          <h2 className="text-6xl font-bold">{isLogin ? 'Login' : 'Sign Up'}</h2>
           {isLogin ? <Login /> : <Signup />}
-          <button onClick={toggleForm} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+          <button onClick={toggleForm} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded ">
             {isLogin ? 'Switch to Sign Up' : 'Switch to Login'}
           </button>
         </div>
