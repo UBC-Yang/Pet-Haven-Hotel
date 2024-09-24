@@ -139,7 +139,7 @@ const Services = () => {
     return (
         <main className="mt-16 p-4 pt-20">
             <div className="flex flex-col items-center">
-                <h1 className="text-4xl font-bold shadow-md my-6 w-full text-center">Services</h1>
+                <h1 className="text-5xl font-bold mt-8 mb-8 text-center shadow-lg">Services</h1>
                 <ul className="mt-4 space-y-4 w-full">
                     {servicesList.map((service, index) => (
                         <ServiceCard
