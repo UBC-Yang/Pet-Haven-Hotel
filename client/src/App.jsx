@@ -2,30 +2,34 @@ import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import client from './utils/apolloClient';
 import styled from 'styled-components';
-import Navbar from './components/Navbar'; // Import Navbar
-import Footer from './components/Footer'; // Import Footer
-import { Outlet } from 'react-router-dom'; // Import Outlet
-import { AuthProvider } from './context/AuthContext'; // Import AuthProvider
-import { CartProvider } from './context/CartContext'; // Import CartProvider
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import { Outlet } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 const Container = styled.div`
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
-    flex-grow: 1; // Ensure the container takes up available space
+    flex-grow: 1; 
+
+    @media (max-width: 768px) {
+        padding: 10px;
+    }
 `;
 
 function App() {
     return (
         <ApolloProvider client={client}>
-            <AuthProvider> {/* Wrap your app in AuthProvider */}
-                <CartProvider> {/* Wrap your app in CartProvider */}
+            <AuthProvider>
+                <CartProvider>
                     <div className="flex flex-col min-h-screen">
-                        <Navbar /> {/* Include Navbar */}
-                        <Container>
-                            <Outlet /> {/* This will render the child routes */}
+                        <Navbar />
+                        <Container className="flex-grow">
+                            <Outlet />
                         </Container>
-                        <Footer /> {/* Include Footer */}
+                        <Footer className="mt-auto" />
                     </div>
                 </CartProvider>
             </AuthProvider>
