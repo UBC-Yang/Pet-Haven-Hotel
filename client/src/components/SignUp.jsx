@@ -9,6 +9,8 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [pets, setPets] = useState([{ name: '', gender: '', age: '', breed: '', notes: '' }]);
     const [register, { error }] = useMutation(REGISTER_USER);
 
@@ -99,23 +101,43 @@ const SignUp = () => {
                     className="border p-2 w-full"
                     required
                 />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="border p-2 w-full"
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="border p-2 w-full"
-                    required
-                />
-                
+
+                <div className="relative">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="border p-2 w-full"
+                        required
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-2 top-2 text-sm text-gray-600"
+                    >
+                        {showPassword ? "Hide" : "Show"}
+                    </button>
+                </div>
+
+                <div className="relative">
+                    <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="border p-2 w-full"
+                        required
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-2 top-2 text-sm text-gray-600"
+                    >
+                        {showConfirmPassword ? "Hide" : "Show"}
+                    </button>
+                </div>
+
                 <h2 className="font-bold">Pet Details</h2>
                 {pets.map((pet, index) => (
                     <div key={index} className="border p-4 mb-4">
@@ -128,15 +150,19 @@ const SignUp = () => {
                             className="border p-2 w-full mb-2"
                             required
                         />
-                        <input
-                            type="text"
+
+                        <select
                             name="gender"
-                            placeholder="Gender"
                             value={pet.gender}
                             onChange={(e) => handlePetChange(index, e)}
-                            className="border p-2 w-full mb-2"
+                            className="border p-2 w-full mb-2 text-gray-600"
                             required
-                        />
+                        >
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+
                         <input
                             type="text"
                             name="age"
