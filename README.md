@@ -96,7 +96,7 @@ MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.44mlj.mongodb.net/<data
 
 ## 🎞️ Application Previews
 
-**The Pet Have Hotel Website**
+**The Pet Haven Hotel Website**
 ![](./client/public/images/webpage.png)
 
 ## 🗝️ Resources
