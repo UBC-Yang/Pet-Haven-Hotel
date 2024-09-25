@@ -57,6 +57,7 @@ const Navbar = () => {
           <span className="text-3xl font-serif">Pet Haven Hotel</span>
         </Link>
 
+        {/* Hamburger menu for mobile */}
         <div className="md:hidden">
           <button onClick={toggleMenu} className="text-white">
             <FaBars />
@@ -97,6 +98,11 @@ const Navbar = () => {
               Booking
             </Link>
           </li>
+          <li>
+            <Link to="/products" className="text-white text-2xl hover:bg-gray-700 p-6 rounded font-sans hover:text-shadow-glow">Products</Link> {/* New Products Link */}
+          </li>
+          
+          {/* Authenticated User Links */}
           {isAuthenticated ? (
             <>
               <li>
@@ -133,6 +139,7 @@ const Navbar = () => {
             </li>
           )}
 
+          {/* Cart Icon */}
           <li className="relative">
             <Link to="/cart" className="text-lg hover:bg-gray-700 p-4 rounded flex items-center">
               <FaShoppingCart className="text-2xl" />
@@ -164,6 +171,11 @@ const Navbar = () => {
                 Booking
               </Link>
             </li>
+            <li>
+              <Link to="/products" className="text-gray-800 text-lg hover:bg-gray-200 p-2 rounded" onClick={handleLinkClick}>Products</Link> {/* Mobile Products Link */}
+            </li>
+            
+            {/* Authenticated User Links */}
             {isAuthenticated ? (
               <>
                 <li>
