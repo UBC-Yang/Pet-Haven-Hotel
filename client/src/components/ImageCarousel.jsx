@@ -40,7 +40,7 @@ const Arrow = styled.div`
   align-items: center; /* Vertically center */
   justify-content: center; /* Horizontally center */
   cursor: pointer;
-  z-index: 10;
+  z-index: 1000;
   ${(props) => (props.direction === 'left' ? 'left: 20px;' : 'right: 20px;')}
 `;
 
