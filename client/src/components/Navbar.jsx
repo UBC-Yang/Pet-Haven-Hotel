@@ -1,37 +1,38 @@
+// client/src/components/Navbar.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBars, FaShoppingCart } from 'react-icons/fa'; // Import the cart icon
-import { useAuth } from '../context/AuthContext'; // Use the custom hook instead
-import { useCart } from '../context/CartContext'; // Import the cart context
+import { FaBars, FaShoppingCart } from 'react-icons/fa'; 
+import { useAuth } from '../context/AuthContext'; 
+import { useCart } from '../context/CartContext'; 
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // State to manage the dropdown
-  const { isAuthenticated, logout } = useAuth(); // Get authentication state and logout function
-  const { cart, addToCart, removeFromCart, toggleCart } = useCart(); // Get cart state from context
-  const itemCount = cart.length; // Calculate the number of items in the cart
+  const [isOpen, setIsOpen] = useState(false); 
+  const { isAuthenticated, logout } = useAuth(); 
+  const { cart } = useCart(); 
+  const itemCount = cart.length;
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLinkClick = () => {
-    setIsOpen(false); // Close dropdown when a link is clicked
+    setIsOpen(false); 
   };
 
   return (
     <nav className="bg-[rgb(31,41,55,0.9)] p-4 fixed w-full z-10">
       <div className="flex justify-between items-center mx-4">
-        {/* Logo (Clickable, redirects to home) */}
+        {/* Logo */}
         <Link to="/" className="flex items-center">
           <img
-            src="/images/hotel-logo.png"  // Path to your logo
+            src="/images/hotel-logo.png"
             alt="Hotel Logo"
-            className="h-32 w-32 mr-6"  // Adjust the size here
+            className="h-32 w-32 mr-6"
           />
           <span className="text-white text-5xl font-serif hover:text-shadow-glow">Pet Haven Hotel</span>
         </Link>
 
-        {/* Hamburger menu for mobile view */}
+        {/* Hamburger menu for mobile */}
         <div className="md:hidden">
           <button onClick={toggleMenu} className="text-white">
             <FaBars />
@@ -49,6 +50,9 @@ const Navbar = () => {
           <li>
             <Link to="/booking" className="text-white text-2xl hover:bg-gray-700 p-6 rounded font-sans hover:text-shadow-glow">Booking</Link>
           </li>
+          <li>
+            <Link to="/products" className="text-white text-2xl hover:bg-gray-700 p-6 rounded font-sans hover:text-shadow-glow">Products</Link> {/* New Products Link */}
+          </li>
           
           {/* Authenticated User Links */}
           {isAuthenticated ? (
@@ -65,14 +69,14 @@ const Navbar = () => {
               <Link to="/registration" className="text-white text-2xl hover:bg-gray-700 p-6 rounded font-sans hover:text-shadow-glow">Register</Link>
             </li>
           )}
-          
+
           {/* Cart Icon */}
           <li className="relative">
             <Link to="/cart" className="text-white text-xl hover:bg-gray-700 p-2 rounded flex items-center font-sans hover:text-shadow-glow">
               <FaShoppingCart className="text-2xl" />
               {itemCount > 0 && (
                 <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
-                  {itemCount} {/* Dynamic count of items */}
+                  {itemCount}
                 </span>
               )}
             </Link>
@@ -93,6 +97,10 @@ const Navbar = () => {
             <li>
               <Link to="/booking" className="text-gray-800 text-lg hover:bg-gray-200 p-2 rounded" onClick={handleLinkClick}>Booking</Link>
             </li>
+            <li>
+              <Link to="/products" className="text-gray-800 text-lg hover:bg-gray-200 p-2 rounded" onClick={handleLinkClick}>Products</Link> {/* Mobile Products Link */}
+            </li>
+            
             {/* Authenticated User Links */}
             {isAuthenticated ? (
               <>
@@ -114,7 +122,7 @@ const Navbar = () => {
                 <FaShoppingCart className="text-2xl" />
                 {itemCount > 0 && (
                   <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
-                    {itemCount} {/* Dynamic count of items */}
+                    {itemCount}
                   </span>
                 )}
               </Link>
