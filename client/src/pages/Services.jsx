@@ -45,28 +45,28 @@ const servicesList = [
 const BookingForm = ({ serviceId, bookingDate, setBookingDate, bookingTime, setBookingTime, onBook }) => (
     <div className="mt-4">
         <div className="mt-4">
-            <label>Date: </label>
+            <label className="text-gray-600">Date: </label>
             <input
                 type="date"
                 value={bookingDate}
                 onChange={(e) => setBookingDate(e.target.value)}
-                className="border rounded p-2"
+                className="border border-gray-300 rounded p-2 bg-gray-800 text-white"
             />
         </div>
 
         <div className="mt-4">
-            <label>Time: </label>
+            <label className="text-gray-600">Time: </label>
             <input
                 type="time"
                 value={bookingTime}
                 onChange={(e) => setBookingTime(e.target.value)}
-                className="border rounded p-2"
+                className="border border-gray-300 rounded p-2 bg-gray-800 text-white"
             />
         </div>
 
         <button
             onClick={() => onBook(serviceId)}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+            className="mt-4 bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 transition duration-300"
         >
             Book Now
         </button>
@@ -77,10 +77,9 @@ const ServiceCard = ({ service, bookingDate, setBookingDate, bookingTime, setBoo
     return (
         <div
             key={service.id}
-            className="rounded-lg shadow-md mb-4 w-full flex flex-col md:flex-row"
+            className="rounded-lg shadow-md mb-4 w-full flex flex-col md:flex-row bg-gray-800 text-gray-300"
             style={{ backgroundColor: service.backgroundColor }}
         >
-            {/* Image without fade effect */}
             <div className="relative w-full md:w-3/3 h-full">
                 <img
                     src={service.image}
@@ -90,10 +89,10 @@ const ServiceCard = ({ service, bookingDate, setBookingDate, bookingTime, setBoo
             </div>
 
             <div className="flex flex-col justify-between p-4 w-full">
-                <h2 className="text-4xl font-semibold mb-4">{service.name}</h2>
+                <h2 className="text-4xl font-semibold mb-4 text-cyan-600">{service.name}</h2> {/* Updated to match Booking.jsx */}
                 <p>{service.description}</p>
-                <p className="text-xl mt-2">Price: ${service.price}</p>
-
+                <p className="text-xl mt-2 text-cyan-600">Price: ${service.price}</p> {/* Updated price color */}
+                
                 <BookingForm
                     serviceId={service.id}
                     bookingDate={bookingDate}
@@ -127,7 +126,6 @@ const Services = () => {
             });
 
             alert('Service booked successfully!');
-            // Reset booking fields after successful booking
             setBookingDate('');
             setBookingTime('');
         } catch (err) {
@@ -137,9 +135,9 @@ const Services = () => {
     };
 
     return (
-        <main className="mt-16 p-4 pt-20">
+        <main className="mt-16 p-4 pt-20 bg-gray-800 text-gray-300"> {/* Updated background and text color */}
             <div className="flex flex-col items-center">
-                <h1 className="text-5xl font-bold mt-8 mb-8 text-center shadow-lg">Services</h1>
+                <h1 className="text-5xl font-bold mt-8 mb-8 text-center text-cyan-600 shadow-lg">Services</h1> {/* Updated title color */}
                 <ul className="mt-4 space-y-4 w-4/5 flex flex-col items-center">
                     {servicesList.map((service, index) => (
                         <ServiceCard
@@ -150,7 +148,7 @@ const Services = () => {
                             bookingTime={bookingTime}
                             setBookingTime={setBookingTime}
                             onBook={handleBookNow}
-                            index={index} // Pass index for alternating layout
+                            index={index}
                         />
                     ))}
                 </ul>
