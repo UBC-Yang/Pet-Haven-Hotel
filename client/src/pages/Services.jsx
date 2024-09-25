@@ -90,9 +90,9 @@ const ServiceCard = ({ service, bookingDate, setBookingDate, bookingTime, setBoo
             </div>
 
             <div className="flex flex-col justify-between p-4 w-full">
-                <h2 className="text-xl font-semibold">{service.name}</h2>
+                <h2 className="text-4xl font-semibold mb-4">{service.name}</h2>
                 <p>{service.description}</p>
-                <p>Price: ${service.price}</p>
+                <p className="text-xl mt-2">Price: ${service.price}</p>
 
                 <BookingForm
                     serviceId={service.id}
@@ -140,7 +140,7 @@ const Services = () => {
         <main className="mt-16 p-4 pt-20">
             <div className="flex flex-col items-center">
                 <h1 className="text-5xl font-bold mt-8 mb-8 text-center shadow-lg">Services</h1>
-                <ul className="mt-4 space-y-4 w-full">
+                <ul className="mt-4 space-y-4 w-4/5 flex flex-col items-center">
                     {servicesList.map((service, index) => (
                         <ServiceCard
                             key={service.id}
