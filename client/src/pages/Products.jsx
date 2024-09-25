@@ -27,23 +27,25 @@ const products = [
 
 const Products = () => {
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-8 text-center">Our Products</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {products.map((product) => (
-          <div key={product.id} className="border p-4 rounded-lg shadow-lg">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="h-48 w-full object-cover rounded-t-lg"
-            />
-            <h2 className="text-2xl font-semibold mt-4">{product.name}</h2>
-            <p className="mt-2 text-gray-600">{product.description}</p>
-            <p className="text-lg font-bold mt-4">{product.price}</p>
-          </div>
-        ))}
+    <main className="mt-16 p-4 pt-20 bg-gray-800 text-gray-300"> {/* Updated background and text color */}
+      <div className="container mx-auto">
+        <h1 className="text-5xl font-bold mb-8 text-center text-cyan-600 shadow-lg">Our Products</h1> {/* Updated title color */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {products.map((product) => (
+            <div key={product.id} className="rounded-lg shadow-md bg-gray-800 p-4">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-48 w-full object-cover rounded-t-lg"
+              />
+              <h2 className="text-4xl font-semibold mt-4 text-cyan-600">{product.name}</h2> {/* Updated font size and color */}
+              <p className="mt-2 text-gray-400">{product.description}</p> {/* Adjusted text color */}
+              <p className="text-lg font-bold mt-4 text-cyan-600">{product.price}</p> {/* Updated price color */}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
