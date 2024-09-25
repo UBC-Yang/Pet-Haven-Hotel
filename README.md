@@ -96,20 +96,8 @@ MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.44mlj.mongodb.net/<data
 
 ## 🎞️ Application Previews
 
-**Login Page**
-![](./public/)
-
-**Sign Up Page**
-![](./public/)
-
-**Landing Page**
-![](./public/)
-
-**Services Page**
-![](./public/)
-
-**Profile Page**
-![](./public/)
+**The Pet Have Hotel Website**
+![](./client/public/images/webpage.png)
 
 ## 🗝️ Resources
 - Dynamic JavaScript
