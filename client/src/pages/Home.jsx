@@ -12,21 +12,21 @@ const Home = () => {
         </div>
 
         {/* Welcome Section */}
-        <div className="w-full px-4 lg:px-24 text-center my-8">
+        <div className="w-full max-w-6xl px-4 lg:px-24 text-center my-8">
           <h1 className="text-4xl font-bold">Pet Haven Hotel</h1>
           <h2 className="text-2xl my-2">Your pet's home away from home!</h2>
           <section className="mt-6">
             <h3 className="text-2xl">Welcome to Pet Haven Hotel</h3>
-            <p className="mt-4">
+            <p className="mt-4 text-lg"> {/* Increased font size for responsiveness */}
               At Pet Haven Hotel, we provide a luxurious and caring environment for your beloved pets.
               Our experienced staff is dedicated to ensuring that every pet receives personalized attention and care.
             </p>
-            <p className="mt-4">
+            <p className="mt-4 text-lg">
               We offer a variety of services tailored to your pet's needs, including grooming, spa treatments,
               and comfortable accommodations. Your pet will enjoy playtime, relaxation, and a home-like atmosphere
               while you’re away.
             </p>
-            <p className="mt-4">
+            <p className="mt-4 text-lg">
               Come and experience the best in pet hospitality at Pet Haven Hotel. Your furry friend will thank you!
             </p>
           </section>
@@ -55,21 +55,21 @@ const Home = () => {
           {/* Centered Testimonials */}
           <div className="relative z-100 flex flex-col items-center justify-center h-full p-8 text-white text-center">
             <h2 className="text-3xl font-bold mb-6">In The Press</h2>
-            <div className="flex flex-wrap justify-center gap-20">
+            <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-10"> {/* Adjusted for responsiveness */}
               {/* Testimonial 1 */}
-              <div className="bg-white bg-opacity-60 p-4 rounded-lg shadow-lg text-gray-800 max-w-xs z-100">
+              <div className="bg-white bg-opacity-60 p-6 rounded-lg shadow-lg text-gray-800 max-w-xs z-100">
                 <p className="italic">
                   "I can’t recommend Pet Haven Hotel enough! You guys! The luxurious spa services transformed my anxious dog into a calm and happy pup. It is the best! The staff is incredibly attentive and truly understands how to pamper pets."
                 </p>
               </div>
               {/* Testimonial 2 */}
-              <div className="bg-white bg-opacity-60 p-4 rounded-lg shadow-lg text-gray-800 max-w-xs z-100">
+              <div className="bg-white bg-opacity-60 p-6 rounded-lg shadow-lg text-gray-800 max-w-xs z-100">
                 <p className="italic">
                   "Pet Haven Hotel is more than just a place to stay; it's a spa retreat for my cat! The grooming services are exceptional, and I appreciate the holistic approach to pet care. My fur baby always looks and feels amazing after her stays!"
                 </p>
               </div>
               {/* Testimonial 3 */}
-              <div className="bg-white bg-opacity-60 p-4 rounded-lg shadow-lg text-gray-800 max-w-xs z-100">
+              <div className="bg-white bg-opacity-60 p-6 rounded-lg shadow-lg text-gray-800 max-w-xs z-100">
                 <p className="italic">
                   "Pet Haven Hotel is a true paradise for my pup! The spa treatments are top-notch, and I love that they offer massages and facials for pets. My dog comes home feeling relaxed and rejuvenated!"
                 </p>

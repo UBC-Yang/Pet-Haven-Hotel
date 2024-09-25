@@ -30,14 +30,20 @@ const Arrow = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 2rem;
-  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  background-color: rgba(179, 213, 247, 0.5);
   color: white;
-  padding: 10px;
+  width: 40px; /* Set the width */
+  height: 40px; /* Set the height equal to the width */
+  border-radius: 50%; /* Make it circular */
+  display: flex; /* Center content inside */
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
   cursor: pointer;
   z-index: 10;
   ${(props) => (props.direction === 'left' ? 'left: 20px;' : 'right: 20px;')}
 `;
+
 
 const Dots = styled.div`
   position: absolute;
