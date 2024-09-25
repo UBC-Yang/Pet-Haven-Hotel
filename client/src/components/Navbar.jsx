@@ -99,7 +99,13 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/products" className="text-white text-2xl hover:bg-gray-700 p-6 rounded font-sans hover:text-shadow-glow">Products</Link> {/* New Products Link */}
+            <Link to="/products"
+              className={`text-lg hover:bg-gray-700 p-4 rounded ${
+                activeSection === 'booking' ? 'text-cyan-600' : ''
+              }`}
+              onClick={handleLinkClick}
+            >
+              Products</Link> {/* New Products Link */}
           </li>
           
           {/* Authenticated User Links */}
