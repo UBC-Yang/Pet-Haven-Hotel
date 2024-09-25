@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Service = require('../models/Service');
+const User = require('../models/User'); // Import the User model
 const db = require('../config/connection');
 
 const serviceData = [
@@ -29,11 +30,49 @@ const serviceData = [
   }
 ];
 
+// Sample user data
+const userData = [
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    username: 'johnDoe',
+    email: 'john@example.com',
+    password: 'password123', // Use a simple password for testing
+    pets: [
+      {
+        name: 'Fido',
+        gender: 'male',
+        age: 5,
+        breed: 'Labrador',
+        notes: 'Loves to play fetch.'
+      }
+    ]
+  },
+  {
+    firstName: 'Jane',
+    lastName: 'Smith',
+    username: 'janeSmith',
+    email: 'jane@example.com',
+    password: 'password123', // Use a simple password for testing
+    pets: [
+      {
+        name: 'Whiskers',
+        gender: 'female',
+        age: 3,
+        breed: 'Siamese',
+        notes: 'Very playful and friendly.'
+      }
+    ]
+  }
+];
+
 db.once('open', async () => {
   try {
     await Service.deleteMany({});  // Clear existing services
+    await User.deleteMany({});      // Clear existing users
     await Service.insertMany(serviceData);  // Insert new services
-    console.log('Services seeded!');
+    await User.insertMany(userData);        // Insert new users
+    console.log('Services and users seeded!');
   } catch (err) {
     console.error(err);
   } finally {
