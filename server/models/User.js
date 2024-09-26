@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
 // Define the Pet schema
 const PetSchema = new mongoose.Schema({
@@ -10,7 +9,7 @@ const PetSchema = new mongoose.Schema({
     gender: {
         type: String,
         required: true,
-        enum: ['male', 'female', 'Male', 'Female'], 
+        enum: ['male', 'female', 'Male', 'Female'],
     },
     age: {
         type: Number,
@@ -63,13 +62,7 @@ const UserSchema = new mongoose.Schema({
     pets: [PetSchema], // Include pets in the User model
 });
 
-// Hash password before saving
-UserSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-});
+// Removed the 'pre-save' middleware to skip password hashing
 
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

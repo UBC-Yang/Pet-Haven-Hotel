@@ -1,36 +1,53 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { REGISTER_USER } from '../utils/mutations'; // Adjust the import path as necessary
+import { REGISTER_USER } from '../utils/mutations';
 
 const SignUp = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [userDetails, setUserDetails] = useState({
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [pets, setPets] = useState([{ name: '', gender: '', age: '', breed: '', notes: '' }]);
     const [register, { error }] = useMutation(REGISTER_USER);
     const [registrationError, setRegistrationError] = useState('');
+    const [registrationSuccess, setRegistrationSuccess] = useState('');
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserDetails({ ...userDetails, [name]: value });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setRegistrationError(''); // Reset error message
-    
+        setRegistrationError('');
+        setRegistrationSuccess('');
+
+        const { password, confirmPassword } = userDetails;
+
         // Password validation
         if (password !== confirmPassword) {
             setRegistrationError("Passwords do not match.");
             return;
         }
-    
+
+        // Check for minimum password length
+        if (password.length < 8) {
+            setRegistrationError("Password must be at least 8 characters long.");
+            return;
+        }
+
         // Validate pet entries before submitting
         const updatedPets = pets.map(pet => ({
             ...pet,
             age: parseInt(pet.age, 10) >= 0 ? parseInt(pet.age, 10) : 0 // Ensure age is non-negative
         }));
-    
+
         // Check for empty fields in pets
         for (const pet of updatedPets) {
             if (!pet.name || !pet.gender || !pet.breed) {
@@ -38,24 +55,22 @@ const SignUp = () => {
                 return;
             }
         }
-    
+
+        // Proceed with registration
         try {
             const { data } = await register({
                 variables: {
-                    firstName,
-                    lastName,
-                    username,
-                    email,
-                    password,
+                    ...userDetails,
                     pets: updatedPets,
                 },
             });
             console.log('Registration successful:', data);
+            setRegistrationSuccess("Registration successful! Please log in.");
             resetForm();
         } catch (error) {
             console.error("Registration error details:", error);
             const errorMessage = error.graphQLErrors?.[0]?.message || "Registration failed. Please check your inputs.";
-            setRegistrationError(errorMessage); // Display error messages more clearly
+            setRegistrationError(errorMessage);
         }
     };
 
@@ -78,12 +93,14 @@ const SignUp = () => {
     };
 
     const resetForm = () => {
-        setFirstName('');
-        setLastName('');
-        setUsername('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
+        setUserDetails({
+            firstName: '',
+            lastName: '',
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        });
         setPets([{ name: '', gender: '', age: '', breed: '', notes: '' }]);
     };
 
@@ -93,33 +110,37 @@ const SignUp = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <input
                     type="text"
+                    name="firstName"
                     placeholder="First Name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    value={userDetails.firstName}
+                    onChange={handleChange}
                     className="border p-2 w-full"
                     required
                 />
                 <input
                     type="text"
+                    name="lastName"
                     placeholder="Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    value={userDetails.lastName}
+                    onChange={handleChange}
                     className="border p-2 w-full"
                     required
                 />
                 <input
                     type="text"
+                    name="username"
                     placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={userDetails.username}
+                    onChange={handleChange}
                     className="border p-2 w-full"
                     required
                 />
                 <input
                     type="email"
+                    name="email"
                     placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={userDetails.email}
+                    onChange={handleChange}
                     className="border p-2 w-full"
                     required
                 />
@@ -127,9 +148,10 @@ const SignUp = () => {
                 <div className="relative">
                     <input
                         type={showPassword ? "text" : "password"}
+                        name="password"
                         placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={userDetails.password}
+                        onChange={handleChange}
                         className="border p-2 w-full"
                         required
                     />
@@ -145,9 +167,10 @@ const SignUp = () => {
                 <div className="relative">
                     <input
                         type={showConfirmPassword ? "text" : "password"}
+                        name="confirmPassword"
                         placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={userDetails.confirmPassword}
+                        onChange={handleChange}
                         className="border p-2 w-full"
                         required
                     />
@@ -211,7 +234,6 @@ const SignUp = () => {
                             value={pet.notes}
                             onChange={(e) => handlePetChange(index, e)}
                             className="border p-2 w-full mb-2"
-                            required
                         />
                         <button
                             type="button"
@@ -230,8 +252,9 @@ const SignUp = () => {
                 <button type="submit" className="bg-green-500 text-white p-2 rounded mt-4">
                     Sign Up
                 </button>
-                {registrationError && <p className="text-red-500">{registrationError}</p>}
-                {error && <p className="text-red-500">{error.message}</p>}
+                {registrationError && <p className="text-red-500 mt-2">{registrationError}</p>}
+                {registrationSuccess && <p className="text-green-500 mt-2">{registrationSuccess}</p>}
+                {error && <p className="text-red-500 mt-2">{error.message}</p>}
             </form>
         </div>
     );
