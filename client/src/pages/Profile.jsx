@@ -1,12 +1,19 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_BOOKINGS } from '../utils/queries';
+import { useAuth } from '../context/AuthContext';  // Import useAuth for authentication
 
 const Profile = () => {
-  const userId = "CURRENT_USER_ID"; // Replace this with the actual user ID
+  const { user } = useAuth();  // Get authenticated user
+  const userId = user ? user._id : null;  // Extract user ID
+
   const { loading, error, data } = useQuery(GET_BOOKINGS, {
-    variables: { userId },
+    variables: { userId },  // Use the userId dynamically
   });
+
+  if (!userId) {
+    return <p className="text-center">Please log in to view your profile.</p>;
+  }
 
   if (loading) return <p className="text-center">Loading...</p>;
   if (error) return <p className="text-center">Error: {error.message}</p>;
@@ -14,7 +21,7 @@ const Profile = () => {
   const bookings = data.bookings || [];
 
   return (
-    <main className="mt-16 p-4 pt-20"> {/* Add margin-top and padding */}
+    <main className="mt-16 p-4 pt-20">
       <div className="flex flex-col items-center">
         <div className="max-w-2xl w-full my-3">
           <h1 className="text-4xl font-bold">Your Profile</h1>

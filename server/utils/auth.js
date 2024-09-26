@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 
 // Use environment variables for security
 const secret = process.env.JWT_SECRET || 'mysecretssshhhhhhh';
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
-
 const expiration = process.env.JWT_EXPIRATION || '2h';
 
 module.exports = {
@@ -29,11 +27,10 @@ module.exports = {
 
     // If token can be verified, add the decoded user's data to the request
     try {
-      const { data } = jwt.verify(token, secret); // Removed maxAge
+      const { data } = jwt.verify(token, secret);
       req.user = data; // Attach user data to the request
     } catch (err) {
       console.log('Invalid token:', err);
-      // Optionally, do not attach req.user if token is invalid
       req.user = null; // Explicitly set to null for clarity
     }
 

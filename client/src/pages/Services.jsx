@@ -107,6 +107,8 @@ const ServiceCard = ({ service, bookingDate, setBookingDate, bookingTime, setBoo
 };
 
 const Services = () => {
+    const { user } = useAuth();  // Get the authenticated user
+    const userId = user ? user._id : null;  // Extract user ID if logged in
     const [bookingDate, setBookingDate] = useState('');
     const [bookingTime, setBookingTime] = useState('');
     const [bookServices] = useMutation(BOOK_SERVICES);
@@ -117,10 +119,15 @@ const Services = () => {
             return;
         }
 
+        if (!userId) {
+            alert("Please log in to book a service.");
+            return;
+        }
+
         try {
             const { data } = await bookServices({
                 variables: {
-                    userId: "CURRENT_USER_ID",  // Replace with actual user ID from auth context
+                    userId: userId,  // Use the authenticated user ID
                     serviceIds: [serviceId]
                 }
             });
@@ -137,7 +144,12 @@ const Services = () => {
     return (
         <main className="mt-16 p-4 pt-20 bg-gray-800 text-gray-300"> {/* Updated background and text color */}
             <div className="flex flex-col items-center">
-                <h1 className="text-5xl font-bold mt-8 mb-8 text-center text-cyan-600 shadow-lg">Services</h1> {/* Updated title color */}
+                <h1 className="text-5xl font-bold mt-8 mb-8 text-center text-cyan-600 shadow-lg">Services</h1>
+                {userId ? (  // Conditional rendering based on user ID
+                    <p>Welcome, User ID: {userId}</p>
+                ) : (
+                    <p>Please log in to book services</p>
+                )}
                 <ul className="mt-4 space-y-4 w-4/5 flex flex-col items-center">
                     {servicesList.map((service, index) => (
                         <ServiceCard
@@ -148,7 +160,6 @@ const Services = () => {
                             bookingTime={bookingTime}
                             setBookingTime={setBookingTime}
                             onBook={handleBookNow}
-                            index={index}
                         />
                     ))}
                 </ul>
