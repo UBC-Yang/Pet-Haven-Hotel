@@ -75,7 +75,7 @@ THEN I am logged out of my account and the navigation bar reverts to displaying 
 ## 💡 Usage and Installation Instructions
 ✨ **Using Render:**
 
-[Pet Haven Hotel Website]()
+[Pet Haven Hotel Website](https://pet-haven-hotel-5w68.onrender.com/)
 
 ✨ **Using the GitHub Repository:**
 
