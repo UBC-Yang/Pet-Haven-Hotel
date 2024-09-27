@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         element: <Services /> 
       },
       {
-        path: 'products',  // Add Products route
+        path: 'products',
         element: <Products />
       }
     ]

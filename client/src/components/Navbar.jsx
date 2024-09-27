@@ -54,7 +54,9 @@ const Navbar = () => {
             alt="Hotel Logo"
             className="h-16 w-16 mr-4"  
           />
-          <span className="text-3xl font-serif">Pet Haven Hotel</span>
+          <span className="text-3xl font-serif text-[rgb(156,163,175)] transition duration-300 hover:text-white hover:animate-pulse">
+            Pet Haven Hotel
+          </span>
         </Link>
 
         {/* Hamburger menu for mobile */}

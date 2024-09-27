@@ -137,7 +137,7 @@ const Services = () => {
     return (
         <main className="mt-16 p-4 pt-20 bg-gray-800 text-gray-300"> {/* Updated background and text color */}
             <div className="flex flex-col items-center">
-                <h1 className="text-5xl font-bold mt-8 mb-8 text-center text-cyan-600 shadow-lg">Services</h1> {/* Updated title color */}
+                <h1 className="text-5xl font-bold mt-8 mb-8 text-center text-cyan-600 shadow-lg">Our Services</h1> {/* Updated title color */}
                 <ul className="mt-4 space-y-4 w-4/5 flex flex-col items-center">
                     {servicesList.map((service, index) => (
                         <ServiceCard
