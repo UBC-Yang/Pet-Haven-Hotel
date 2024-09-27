@@ -120,7 +120,7 @@ const Services = () => {
         try {
             const { data } = await bookServices({
                 variables: {
-                    userId: "CURRENT_USER_ID",  // Replace with actual user ID from auth context
+                    userId: userId,  // Use the authenticated user ID
                     serviceIds: [serviceId]
                 }
             });

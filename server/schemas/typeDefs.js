@@ -38,6 +38,7 @@ const typeDefs = gql`
         profiles: [User]
         services: [Service]
         bookings(userId: ID!): [Booking]
+        getUserByEmail(email: String!): User
     }
 
     type Mutation {

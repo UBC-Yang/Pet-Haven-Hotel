@@ -47,3 +47,13 @@ export const QUERY_PROFILES = gql`
     }
 `;
 
+// Define and export QUERY_CHECKOUT
+export const QUERY_CHECKOUT = gql`
+    query Checkout($items: [ID!]!) {
+        checkout(items: $items) {
+            session
+        }
+    }
+`;
+
+

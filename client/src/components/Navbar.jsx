@@ -103,7 +103,7 @@ const Navbar = () => {
           <li>
             <Link to="/products"
               className={`text-lg hover:bg-gray-700 p-4 rounded ${
-                activeSection === 'booking' ? 'text-cyan-600' : ''
+                activeSection === 'products' ? 'text-cyan-600' : ''
               }`}
               onClick={handleLinkClick}
             >
@@ -125,12 +125,13 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <button
+                <Link
+                  to="/"
                   onClick={logout}
                   className="text-lg hover:bg-gray-700 p-4 rounded"
                 >
                   Logout
-                </button>
+                </Link>
               </li>
             </>
           ) : (
@@ -192,9 +193,9 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <button onClick={() => { handleLinkClick(); logout(); }} className="text-gray-800 text-lg hover:bg-gray-200 p-2 rounded">
+                  <Link to="/" onClick={() => { handleLinkClick(); logout(); }} className="text-gray-800 text-lg hover:bg-gray-200 p-2 rounded">
                     Logout
-                  </button>
+                  </Link>
                 </li>
               </>
             ) : (

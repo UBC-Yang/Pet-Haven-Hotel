@@ -1,4 +1,4 @@
-// client/src/main.jsx
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
@@ -6,22 +6,30 @@ import './index.css';
 import App from './App.jsx';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import Registration from './pages/Registration';  
+import Registration from './pages/Registration';
 import Booking from './pages/Booking';
-import Services from './pages/Services'; 
+import Services from './pages/Services';
 import Products from './pages/Products';  // Import Products page
+
+const ErrorPage = () => (
+  <div className="flex flex-col items-center justify-center h-screen">
+    <h1 className="text-3xl font-bold text-red-600">404 - Page Not Found</h1>
+    <p className="text-xl">Sorry, we couldn't find what you were looking for.</p>
+  </div>
+);
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />, 
+    element: <App />,
+    errorElement: <ErrorPage />,  // Add an error page handler
     children: [
       {
         index: true,
         element: <Home />
       },
       {
-        path: 'registration',  
+        path: 'registration',
         element: <Registration />
       },
       {
@@ -34,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'services',
-        element: <Services /> 
+        element: <Services />
       },
       {
         path: 'products',
@@ -45,5 +53,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );

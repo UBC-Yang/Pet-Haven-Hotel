@@ -2,35 +2,58 @@ import decode from 'jwt-decode';
 
 class AuthService {
   getProfile() {
-    return decode(this.getToken());
+    try {
+      const token = this.getToken();
+      if (!token) return null; // Return null if no token is found
+      return decode(token); // Decode and return the profile
+    } catch (error) {
+      console.error('Error decoding token in getProfile:', error);
+      return null; // Return null if decoding fails
+    }
   }
 
   loggedIn() {
     const token = this.getToken();
-    return token && !this.isTokenExpired(token) ? true : false;
+    // Check if the token exists and is not expired
+    return !!token && !this.isTokenExpired(token);
   }
 
   isTokenExpired(token) {
-    const decoded = decode(token);
-    if (decoded.exp < Date.now() / 1000) {
-      localStorage.removeItem('id_token');
-      return true;
+    if (!token) return true; // If no token, it's considered expired
+    try {
+      const decoded = decode(token);
+      return decoded.exp < Date.now() / 1000; // Check if token is expired
+    } catch (error) {
+      console.error('Error decoding token in isTokenExpired:', error, 'Token:', token);
+      return true; // Assume the token is expired or invalid if decoding fails
     }
-    return false;
   }
 
   getToken() {
-    return localStorage.getItem('id_token');
+    try {
+      return localStorage.getItem('id_token');
+    } catch (error) {
+      console.error('Error getting token from local storage:', error);
+      return null; // Return null if there's an error accessing local storage
+    }
   }
 
   login(idToken) {
-    localStorage.setItem('id_token', idToken);
-    window.location.assign('/');
+    try {
+      localStorage.setItem('id_token', idToken);
+      window.location.assign('/'); // Redirect to home page after login
+    } catch (error) {
+      console.error('Error saving token to local storage during login:', error);
+    }
   }
 
   logout() {
-    localStorage.removeItem('id_token');
-    window.location.reload();
+    try {
+      localStorage.removeItem('id_token');
+      window.location.reload(); // Reload the page to reset the state
+    } catch (error) {
+      console.error('Error removing token from local storage during logout:', error);
+    }
   }
 }
 
