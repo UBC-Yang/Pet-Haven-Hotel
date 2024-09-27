@@ -18,14 +18,27 @@ const initialState = {
 const cartReducer = (state, action) => {
     switch (action.type) {
         case ADD_TO_CART:
+            const existingItem = state.cart.find(item => item._id === action.payload._id);
+            if (existingItem) {
+                // If the item already exists in the cart, increment its quantity
+                return {
+                    ...state,
+                    cart: state.cart.map(item =>
+                        item._id === action.payload._id
+                            ? { ...item, purchaseQuantity: item.purchaseQuantity + 1 }
+                            : item
+                    ),
+                };
+            }
+            // If the item does not exist, add it to the cart with a quantity of 1
             return {
                 ...state,
-                cart: [...state.cart, action.payload],
+                cart: [...state.cart, { ...action.payload, purchaseQuantity: 1 }],
             };
         case REMOVE_FROM_CART:
             return {
                 ...state,
-                cart: state.cart.filter((item) => item._id !== action.payload),
+                cart: state.cart.filter(item => item._id !== action.payload),
             };
         case TOGGLE_CART:
             return {
