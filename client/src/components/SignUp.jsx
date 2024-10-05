@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import { REGISTER_USER, LOGIN_USER } from '../utils/mutations'; // Import LOGIN_USER mutation
 import AuthService from '../utils/auth'; // Import AuthService for managing tokens
 import { useAuth } from '../context/AuthContext'; // Import AuthContext
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 const SignUp = () => {
     const [userDetails, setUserDetails] = useState({
@@ -21,6 +22,7 @@ const SignUp = () => {
     const { login } = useAuth(); // Get login function from AuthContext
     const [registrationError, setRegistrationError] = useState('');
     const [registrationSuccess, setRegistrationSuccess] = useState('');
+    const navigate = useNavigate(); // Initialize navigate for redirection
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -81,6 +83,7 @@ const SignUp = () => {
 
             setRegistrationSuccess("Registration and login successful!");
             resetForm();
+            navigate('/'); // Redirect to the main page after successful registration and login
         } catch (error) {
             console.error("Registration or login error:", error);
             const errorMessage = error.graphQLErrors?.[0]?.message || "Registration failed. Please check your inputs.";
