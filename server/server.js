@@ -20,9 +20,6 @@ const server = new ApolloServer({
 });
 
 // Enable CORS
-app.use(cors());
-app.use(express.json()); // Use JSON parser for POST requests
-=======
 app.use(cors({
   origin: [ 
     'http://localhost:3000',   // For local development
@@ -31,12 +28,15 @@ app.use(cors({
   credentials: true, // If you're using cookies or authentication
 }));
 
+app.use(express.json()); // Use JSON parser for POST requests
+
 // Payment Routes
 app.use('/api', paymentRoutes);
 
 // Start the Apollo Server
 const startServer = async () => {
   await server.start();
+
   // Apollo server middleware with authentication
   app.use('/graphql', expressMiddleware(server, {
     context: authMiddleware,
