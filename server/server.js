@@ -6,7 +6,6 @@ const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
-
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 
@@ -24,9 +23,10 @@ console.log("JWT_SECRET:", process.env.JWT_SECRET);
 app.use(cors({
   origin: [ 
     'http://localhost:3000',   // For local development
+    'http://127.0.0.1:3000',   // Allow 127.0.0.1 as well
     'https://pet-haven-hotel-5w68.onrender.com'  // For production
   ],
-  credentials: true, // If you're using cookies or authentication
+  credentials: true, // Allow credentials to be included
 }));
 
 // Create a new instance of an Apollo server with the GraphQL schema
