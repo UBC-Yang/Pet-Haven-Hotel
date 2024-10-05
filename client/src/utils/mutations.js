@@ -20,7 +20,7 @@ export const REGISTER_USER = gql`
     ) {
       token
       user {
-        id
+        _id  # Changed from id to _id
         firstName
         lastName
         email
@@ -42,7 +42,7 @@ export const LOGIN_USER = gql`
     login(email: $email, password: $password) {
       token
       user {
-        id
+        _id  # Changed from id to _id
         username
         firstName
         lastName
@@ -63,13 +63,13 @@ export const LOGIN_USER = gql`
 export const BOOK_SERVICES = gql`
   mutation BookServices($userId: ID!, $serviceIds: [ID!]!) {
     bookServices(userId: $userId, serviceIds: $serviceIds) {
-      id
+      _id  # Changed from id to _id
       user {
-        id
+        _id  # Changed from id to _id
         username
       }
       services {
-        id
+        _id  # Changed from id to _id
         name
         price
       }
@@ -81,9 +81,9 @@ export const BOOK_SERVICES = gql`
 export const REMOVE_SERVICE_FROM_BOOKING = gql`
   mutation RemoveServiceFromBooking($bookingId: ID!, $serviceId: ID!) {
     removeServiceFromBooking(bookingId: $bookingId, serviceId: $serviceId) {
-      id
+      _id  # Changed from id to _id
       services {
-        id
+        _id  # Changed from id to _id
         name
         price
       }
@@ -95,7 +95,7 @@ export const REMOVE_SERVICE_FROM_BOOKING = gql`
 export const CANCEL_BOOKING = gql`
   mutation CancelBooking($bookingId: ID!) {
     cancelBooking(bookingId: $bookingId) {
-      id
+      _id  # Changed from id to _id
       status
       refundIssued
     }

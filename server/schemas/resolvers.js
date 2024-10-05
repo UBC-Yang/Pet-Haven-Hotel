@@ -1,8 +1,8 @@
-const User = require('../models/User'); // Adjust the path as necessary
-const Booking = require('../models/Booking'); // Include your Booking model
-const Service = require('../models/Service'); // Include your Service model
+const User = require('../models/User');
+const Booking = require('../models/Booking'); 
+const Service = require('../models/Service'); 
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs'); // Still required for comparing existing hashed passwords
+const bcrypt = require('bcryptjs'); 
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
 
 const resolvers = {
@@ -45,12 +45,12 @@ const resolvers = {
         
             // Create a new user with the plain text password
             const user = new User({ firstName, lastName, username, email, password, pets });
-                await user.save();
+            await user.save();
 
             // Generate a JWT token for the new user
-            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-                return { token, user };
-            },
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+            return { token, user };
+        },
         
         login: async (parent, { email, password }) => {
             // Find the user in the database by email
@@ -76,7 +76,7 @@ const resolvers = {
         bookServices: async (_, { userId, serviceIds }) => {
             const booking = new Booking({ user: userId, services: serviceIds });
             await booking.save();
-            return await Booking.findById(booking.id).populate('services');
+            return await Booking.findById(booking._id).populate('services');
         },
         removeServiceFromBooking: async (_, { bookingId, serviceId }) => {
             const booking = await Booking.findById(bookingId);

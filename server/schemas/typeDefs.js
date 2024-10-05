@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
    type User {
-        id: ID!
+        _id: ID!  # Changed from id to _id
         username: String!
         firstName: String!
         lastName: String!
@@ -17,7 +17,7 @@ const typeDefs = gql`
     }
 
     type Service {
-        id: ID!
+        _id: ID!  # Changed from id to _id
         name: String!
         price: Float!
         tier: String!
@@ -25,7 +25,7 @@ const typeDefs = gql`
     }
 
     type Booking {
-        id: ID!
+        _id: ID!  # Changed from id to _id
         user: User!
         services: [Service]
         bookingDate: String!
