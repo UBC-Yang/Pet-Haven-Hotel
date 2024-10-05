@@ -22,6 +22,14 @@ const server = new ApolloServer({
 // Enable CORS
 app.use(cors());
 app.use(express.json()); // Use JSON parser for POST requests
+=======
+app.use(cors({
+  origin: [ 
+    'http://localhost:3000',   // For local development
+    'https://pet-haven-hotel-5w68.onrender.com'  // For production
+  ],
+  credentials: true, // If you're using cookies or authentication
+}));
 
 // Payment Routes
 app.use('/api', paymentRoutes);
