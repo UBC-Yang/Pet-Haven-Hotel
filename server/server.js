@@ -21,7 +21,13 @@ const server = new ApolloServer({
 console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 // Enable CORS
-app.use(cors());
+app.use(cors({
+  origin: [ 
+    'http://localhost:3000',   // For local development
+    'https://pet-haven-hotel-5w68.onrender.com'  // For production
+  ],
+  credentials: true, // If you're using cookies or authentication
+}));
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
