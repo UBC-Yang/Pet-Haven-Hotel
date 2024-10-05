@@ -148,7 +148,7 @@ const Navbar = () => {
             </li>
           )}
 
-          {/* Cart Icon */}
+          {/* Cart Icon
           <li className="relative">
             <Link to="/cart" className="text-lg hover:bg-gray-700 p-4 rounded flex items-center">
               <FaShoppingCart className="text-2xl" />
@@ -158,7 +158,7 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
 
