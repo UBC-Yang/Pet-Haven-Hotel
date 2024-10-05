@@ -1,101 +1,86 @@
-const User = require('../models/User');
-const Booking = require('../models/Booking'); 
-const Service = require('../models/Service'); 
+const { AuthenticationError } = require('apollo-server-express');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs'); 
-const { AuthenticationError, ApolloError } = require('apollo-server-express');
+const User = require('../models/User');
+const Service = require('../models/Service');
+const Cart = require('../models/Cart'); // Import Cart model
+const Booking = require('../models/Booking'); // Assuming you have a Booking model
 
 const resolvers = {
-    Query: {
-        users: async () => User.find(),
-        profiles: async () => User.find(),
-        services: async () => Service.find(),
-        bookings: async (_, { userId }) => Booking.find({ user: userId }).populate('services'),
-        getUserByEmail: async (_, { email }) => {
-            const user = await User.findOne({ email });
-            if (!user) {
-                throw new ApolloError('User not found');
-            }
-            return user;
-        }
+  Query: {
+    me: async (_, __, context) => {
+      if (context.user) {
+        return User.findById(context.user._id);
+      }
+      throw new AuthenticationError('Not authenticated');
     },
-    Mutation: {
-        register: async (_, { firstName, lastName, username, email, password, pets }) => {
-            // Check if all required fields are provided
-            if (!firstName || !lastName || !username || !email || !password) {
-                throw new ApolloError("All fields are required.");
-            }
-            
-            // Validate email format
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                throw new ApolloError("Please enter a valid email address.");
-            }
-        
-            // Check if the user already exists in the database
-            const existingUser = await User.findOne({ email });
-            if (existingUser) {
-                throw new ApolloError("Email is already in use.");
-            }
-        
-            // Ensure password length is sufficient
-            if (password.length < 6) {
-                throw new ApolloError("Password must be at least 6 characters long.");
-            }
-        
-            // Create a new user with the plain text password
-            const user = new User({ firstName, lastName, username, email, password, pets });
-            await user.save();
+    
+    users: async () => {
+      return User.find();
+    },
 
-            // Generate a JWT token for the new user
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-            return { token, user };
-        },
-        
-        login: async (parent, { email, password }) => {
-            // Find the user in the database by email
-            const user = await User.findOne({ email });
-        
-            // If user is not found, throw an error
-            if (!user) {
-                throw new AuthenticationError('User not found');
-            }
-        
-            // Compare the provided password with the stored password
-            const validPassword = user.password === password; // Direct comparison
-        
-            // If the password doesn't match, throw an error
-            if (!validPassword) {
-                throw new AuthenticationError('Incorrect password');
-            }
-        
-            // Generate a JWT token for the user
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            return { token, user };
-        },
-        bookServices: async (_, { userId, serviceIds }) => {
-            const booking = new Booking({ user: userId, services: serviceIds });
-            await booking.save();
-            return await Booking.findById(booking._id).populate('services');
-        },
-        removeServiceFromBooking: async (_, { bookingId, serviceId }) => {
-            const booking = await Booking.findById(bookingId);
-            if (!booking) throw new ApolloError('Booking not found');
+    profiles: async () => {
+      return User.find(); // Adjust based on how you want to get profiles
+    },
 
-            booking.services = booking.services.filter(service => service.toString() !== serviceId);
-            await booking.save();
-            return await booking.populate('services');
-        },
-        cancelBooking: async (_, { bookingId }) => {
-            const booking = await Booking.findById(bookingId);
-            if (!booking) throw new ApolloError('Booking not found');
+    services: async () => {
+      return Service.find();
+    },
 
-            booking.status = 'Cancelled';
-            booking.refundIssued = true;
-            await booking.save();
-            return booking;
-        }
-    }
+    bookings: async (_, { userId }) => {
+      return Booking.find({ user: userId });
+    },
+
+    getCart: async (_, { userId }) => {
+      return await Cart.findOne({ user: userId }).populate('items.serviceId');
+    },
+  },
+  Mutation: {
+    register: async (_, { firstName, lastName, username, email, password, pets }) => {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.create({ firstName, lastName, username, email, password: hashedPassword, pets });
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+      return { token, user };
+    },
+
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        throw new AuthenticationError('Incorrect credentials');
+      }
+      
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+      return { token, user };
+    },
+
+    addToCart: async (_, { userId, serviceId, quantity }) => {
+      const cart = await Cart.findOneAndUpdate(
+        { user: userId },
+        { $addToSet: { items: { serviceId, quantity } } },
+        { new: true, upsert: true }
+      );
+      return cart;
+    },
+
+    updateCartItem: async (_, { userId, serviceId, quantity }) => {
+      const cart = await Cart.findOneAndUpdate(
+        { user: userId, 'items.serviceId': serviceId },
+        { $set: { 'items.$.quantity': quantity } },
+        { new: true }
+      );
+      return cart;
+    },
+
+    removeFromCart: async (_, { userId, serviceId }) => {
+      const cart = await Cart.findOneAndUpdate(
+        { user: userId },
+        { $pull: { items: { serviceId } } },
+        { new: true }
+      );
+      return cart;
+    },
+  },
 };
 
 module.exports = resolvers;

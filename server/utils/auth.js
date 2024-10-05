@@ -1,3 +1,4 @@
+// server/utils/auth.js
 const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
 
@@ -38,8 +39,8 @@ module.exports = {
     return req;
   },
 
-  signToken: function ({ email, name, _id }) {
-    const payload = { email, name, _id }; // Adjust the payload as needed
+  signToken: function ({ email, firstName, _id }) {
+    const payload = { email, firstName, _id }; // Adjust the payload as needed
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };

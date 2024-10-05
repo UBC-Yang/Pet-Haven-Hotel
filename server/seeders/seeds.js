@@ -1,6 +1,7 @@
+// server/seeders/seeds.js
 const mongoose = require('mongoose');
 const Service = require('../models/Service');
-const User = require('../models/User'); // Import the User model
+const User = require('../models/User'); 
 const db = require('../config/connection');
 
 const serviceData = [

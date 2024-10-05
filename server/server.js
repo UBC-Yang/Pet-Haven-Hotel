@@ -1,3 +1,4 @@
+// server.js
 require('dotenv').config(); // Load environment variables
 
 const express = require('express');
@@ -6,9 +7,10 @@ const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
+const db = require('./config/connection');
+const paymentRoutes = require('./routes/payment'); // Import payment routes
 
 const { typeDefs, resolvers } = require('./schemas');
-const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,10 +19,10 @@ const server = new ApolloServer({
   resolvers,
 });
 
-// Debugging: Check the JWT_SECRET
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
-
 // Enable CORS
+app.use(cors());
+app.use(express.json()); // Use JSON parser for POST requests
+=======
 app.use(cors({
   origin: [ 
     'http://localhost:3000',   // For local development
@@ -29,19 +31,12 @@ app.use(cors({
   credentials: true, // If you're using cookies or authentication
 }));
 
-// Create a new instance of an Apollo server with the GraphQL schema
-const startApolloServer = async () => {
+// Payment Routes
+app.use('/api', paymentRoutes);
+
+// Start the Apollo Server
+const startServer = async () => {
   await server.start();
-
-  app.use(express.urlencoded({ extended: false }));
-  app.use(express.json());
-
-  // Debugging: Log the request body
-  app.use('/graphql', (req, res, next) => {
-    console.log(req.body);
-    next();
-  });
-
   // Apollo server middleware with authentication
   app.use('/graphql', expressMiddleware(server, {
     context: authMiddleware,
@@ -65,5 +60,7 @@ const startApolloServer = async () => {
   });
 };
 
-// Call the async function to start the server
-startApolloServer();
+// Call the start function
+startServer().catch((err) => {
+  console.error('Failed to start the server:', err);
+});
