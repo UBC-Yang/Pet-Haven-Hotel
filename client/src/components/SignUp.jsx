@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { REGISTER_USER } from '../utils/mutations';
+import { REGISTER_USER, LOGIN_USER } from '../utils/mutations'; // Import LOGIN_USER mutation
+import AuthService from '../utils/auth'; // Import AuthService for managing tokens
+import { useAuth } from '../context/AuthContext'; // Import AuthContext
 
 const SignUp = () => {
     const [userDetails, setUserDetails] = useState({
@@ -14,7 +16,9 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [pets, setPets] = useState([{ name: '', gender: '', age: '', breed: '', notes: '' }]);
-    const [register, { error }] = useMutation(REGISTER_USER);
+    const [register] = useMutation(REGISTER_USER);
+    const [loginUser] = useMutation(LOGIN_USER); // Setup login mutation
+    const { login } = useAuth(); // Get login function from AuthContext
     const [registrationError, setRegistrationError] = useState('');
     const [registrationSuccess, setRegistrationSuccess] = useState('');
 
@@ -28,7 +32,7 @@ const SignUp = () => {
         setRegistrationError('');
         setRegistrationSuccess('');
 
-        const { password, confirmPassword } = userDetails;
+        const { password, confirmPassword, email } = userDetails;
 
         // Password validation
         if (password !== confirmPassword) {
@@ -58,17 +62,27 @@ const SignUp = () => {
 
         // Proceed with registration
         try {
-            const { data } = await register({
+            const { data: registerData } = await register({
                 variables: {
                     ...userDetails,
                     pets: updatedPets,
                 },
             });
-            console.log('Registration successful:', data);
-            setRegistrationSuccess("Registration successful! Please log in.");
+            console.log('Registration successful:', registerData);
+
+            // After successful registration, log the user in
+            const { data: loginData } = await loginUser({
+                variables: { email, password }
+            });
+
+            const { token } = loginData.login;
+            AuthService.login(token); // Save token to localStorage
+            login(token); // Use the AuthContext's login method to set the user as logged in
+
+            setRegistrationSuccess("Registration and login successful!");
             resetForm();
         } catch (error) {
-            console.error("Registration error details:", error);
+            console.error("Registration or login error:", error);
             const errorMessage = error.graphQLErrors?.[0]?.message || "Registration failed. Please check your inputs.";
             setRegistrationError(errorMessage);
         }
@@ -254,7 +268,6 @@ const SignUp = () => {
                 </button>
                 {registrationError && <p className="text-red-500 mt-2">{registrationError}</p>}
                 {registrationSuccess && <p className="text-green-500 mt-2">{registrationSuccess}</p>}
-                {error && <p className="text-red-500 mt-2">{error.message}</p>}
             </form>
         </div>
     );
