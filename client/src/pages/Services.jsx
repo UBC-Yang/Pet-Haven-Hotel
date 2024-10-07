@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { BOOK_SERVICES } from '../utils/mutations';
+import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
 
 // Services data
 const servicesList = [
@@ -107,6 +108,7 @@ const ServiceCard = ({ service, bookingDate, setBookingDate, bookingTime, setBoo
 };
 
 const Services = () => {
+    const { currentUser } = useAuth();
     const [bookingDate, setBookingDate] = useState('');
     const [bookingTime, setBookingTime] = useState('');
     const [bookServices] = useMutation(BOOK_SERVICES);
@@ -117,10 +119,15 @@ const Services = () => {
             return;
         }
 
+        if (!currentUser || !currentUser._id) {
+            alert("User is not authenticated.");
+            return;
+        }
+
         try {
             const { data } = await bookServices({
                 variables: {
-                    userId: userId,  // Use the authenticated user ID
+                    userId: currentUser._id,  // Use the authenticated user ID
                     serviceIds: [serviceId]
                 }
             });

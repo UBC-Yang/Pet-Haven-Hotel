@@ -9,7 +9,9 @@ const Booking = require('../models/Booking'); // Assuming you have a Booking mod
 const resolvers = {
   Query: {
     me: async (_, __, context) => {
+      console.log("Context in me query:", context);
       if (context.user) {
+        console.log("User ID in context:", context.user._id);
         return User.findById(context.user._id);
       }
       throw new AuthenticationError('Not authenticated');

@@ -3,7 +3,7 @@ const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
 
 // Use environment variables for security
-const secret = process.env.JWT_SECRET || 'mysecretssshhhhhhh';
+const secret = process.env.JWT_SECRET || 'supersecret';
 const expiration = process.env.JWT_EXPIRATION || '2h';
 
 module.exports = {
@@ -23,6 +23,7 @@ module.exports = {
     }
 
     if (!token) {
+      console.log("No token found.");
       return req; // No token found, return the request as-is
     }
 
@@ -30,6 +31,7 @@ module.exports = {
     try {
       const { data } = jwt.verify(token, secret);
       req.user = data; // Attach user data to the request
+      console.log("Decoded user data from token:", data);
     } catch (err) {
       console.log('Invalid token:', err);
       req.user = null; // Explicitly set to null for clarity
@@ -41,6 +43,9 @@ module.exports = {
 
   signToken: function ({ email, firstName, _id }) {
     const payload = { email, firstName, _id }; // Adjust the payload as needed
-    return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+    return jwt.sign({ data: payload }, process.env.JWT_SECRET, { expiresIn: expiration });
   },
 };
+
+
+
