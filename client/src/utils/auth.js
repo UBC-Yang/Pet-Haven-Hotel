@@ -41,6 +41,7 @@ class AuthService {
   login(idToken) {
     try {
       localStorage.setItem('id_token', idToken);
+      console.log("Token stored:", idToken);
       window.location.assign('/'); // Redirect to home page after login
     } catch (error) {
       console.error('Error saving token to local storage during login:', error);

@@ -28,6 +28,8 @@ const Login = () => {
       // Assuming the response includes a token and user data
       const { token, user } = data.login;
 
+      console.log("Token received:", token);
+
       // Store user and token in AuthContext
       AuthService.login(token); // Save token to localStorage
       login(token); // Use the AuthContext's login method

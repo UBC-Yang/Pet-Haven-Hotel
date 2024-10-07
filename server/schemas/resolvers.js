@@ -51,9 +51,17 @@ const resolvers = {
       if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new AuthenticationError('Incorrect credentials');
       }
-      
+      console.log("Generated token:", token);
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-      return { token, user };
+      return { token,
+        user: {
+          _id: user._id,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        },
+     };
     },
 
     addToCart: async (_, { userId, serviceId, quantity }) => {
